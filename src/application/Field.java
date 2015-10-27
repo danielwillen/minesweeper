@@ -13,7 +13,6 @@ public class Field {
 		Tile[][] field = new Tile[width][hight];
 
 	
-	Field field[][] = newBlankField(10,10);
 	
 	public Field newBlankField(int width, int height){
 		Tile field[][] = new Tile[width][height];
