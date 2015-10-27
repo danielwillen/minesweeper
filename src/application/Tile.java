@@ -1,5 +1,7 @@
 package application;
 
+import javafx.scene.image.Image;
+
 public class Tile {
 	
 	private boolean mine, visible;
@@ -32,6 +34,16 @@ public class Tile {
 
 	public boolean isMine() {
 		return mine;
+	}
+	
+	public String getImage(){
+		if(this.mine)
+			return "image/bomb.jpg";
+		else if(!this.isVisible()){
+			return "image/hidden.jpg";
+		} else{
+		return "image/" + neighbour + ".jpg";
+		}
 	}
 
 	public void setMine(boolean mine) {

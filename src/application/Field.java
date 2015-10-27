@@ -17,9 +17,9 @@ public class Field {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				if(rand.nextInt(100) >= 90)
-					tileArray[y][x] = new Tile(true, x, y);
+					tileArray[x][y] = new Tile(true, x, y);
 				else
-					tileArray[y][x] = new Tile(false, x, y);
+					tileArray[x][y] = new Tile(false, x, y);
 			}
 		}
 		return tileArray;

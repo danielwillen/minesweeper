@@ -21,7 +21,7 @@ public class UpdateField implements Runnable {
 		boolean running = true;
 		while(running){
 			try {
-				TimeUnit.MILLISECONDS.sleep(100);
+				TimeUnit.MILLISECONDS.sleep(1000);
 			} catch (InterruptedException e) {
 			}
 			main.printArray(field.getTileArray());
