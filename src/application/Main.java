@@ -36,16 +36,34 @@ public class Main extends Application {
 		primaryStage.show();
 		
 		
+
+		
 		//***TEMPORARY ONLY FOR TESTING***
 		Tile[][] testArray = new Tile[10][10];
 		for (int i = 0; i < testArray.length; i++) {
-			for (int j = 0; j < testArray[i].length; j++) {
+			for (int j = 0; j < testArray.length; j++) {
 				testArray[j][i] = new Tile(false, j, i);
 			}
 		}
 		printArray(testArray);
 		//***TEMPORARY ONLY FOR TESTING***
+
+		canvas.setOnMousePressed(event->{
+			Tile tmptile = testArray[(int) event.getX()/unit][(int) event.getY()/unit];
+			System.out.println((int)event.getX()/unit);
+			System.out.println((int)event.getY()/unit);
+			if(event.isPrimaryButtonDown()){
+				System.out.println("Left klick");
+				//RuleHandlerLeftClick.computetile(tmptile);
+			}
+			if(event.isSecondaryButtonDown()){
+				System.out.println("Right klick");
+				//RuleHandlerRightClick.computetile(tmptile);
+			}
+		});
 	}
+	
+		
 	
 	/**
 	 * @author Martin
