@@ -17,13 +17,41 @@ public class Field {
 		return tileArray;
 	}
 	
-	public void printField(Tile field[][]){
+	public void printField(Tile tileArray[][]){
 		for (int y = 0; y < height; y++){
 			for (int x = 0; x < width; x++)	{
-				System.out.print("X: " + field[x][y].getX());
-				System.out.print(" Y: " + field[x][y].getY());
-				System.out.println(" Mine: " + field[x][y].isMine());
+				System.out.print("X: " + tileArray[x][y].getX());
+				System.out.print(" Y: " + tileArray[x][y].getY());
+				System.out.println(" Mine: " + tileArray[x][y].isMine());
 			}
 		}
+	}
+	
+	public void mineLayer(){
+		
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getSumma() {
+		return summa;
+	}
+
+	public void setSumma(int summa) {
+		this.summa = summa;
 	}
 }
