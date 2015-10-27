@@ -24,7 +24,7 @@ public class UpdateField implements Runnable {
 				TimeUnit.MILLISECONDS.sleep(1000);
 			} catch (InterruptedException e) {
 			}
-			main.printArray(field.getTileArray());
+//			main.printArray(field.getTileArray());
 		}
 	}
 }
