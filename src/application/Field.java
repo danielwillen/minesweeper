@@ -8,7 +8,6 @@ public class Field {
 	public int width = 10;
 	int summa = 0;
 	
-	Field field[][] = newBlankField(10,10);
 	
 	public Field newBlankField(int width, int height){
 		Tile field[][] = new Tile[width][height];
