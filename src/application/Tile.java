@@ -2,9 +2,9 @@ package application;
 
 public class Tile {
 	
-	boolean mine;
-	int neighbour;
-	boolean visible;
+	private boolean mine;
+	private int neighbour;
+	private boolean visible;
 	
 	public Tile(boolean mine, int neighbour) {	//Konstruktor för tile, mina eller inte? hur många minor som grannar (0-8)?
 		super();
