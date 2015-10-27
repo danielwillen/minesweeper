@@ -5,6 +5,8 @@ public class Field {
 	public int width = 10;
 	int summa = 0;
 	
+	Tile tileArray[][] = newBlankField(height, width);
+	
 	
 	public Tile[][] newBlankField(int width, int height){
 		Tile tileArray[][] = new Tile[width][height];
