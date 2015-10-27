@@ -2,49 +2,53 @@ package application;
 
 public class GameHandler {
 
-
-	//Field field = new Field();
 	private int exposeCount=0;
-	private boolean isGameOver=false;
-	private GameState gameState;
+	private GameState gameState= GameState.ONGOING;
+	private Field field;
+	private Tile tile;
 	
-	GameHandler(){
+	GameHandler(Field field){
+		this.field = field;
 		
-//		Tile tile = field[][]
+	}
+
+	public void onClickPosiion(int x, int y){
+		tile = field.tileArray[x][y]; 
 		
 		if (tileIsMined()==false) {
-	
 			expose();
-		
-			
+			if (winCondition()){
+				gameState = GameState.GAMEWON;
+			}
 		}
 		else { 
-			isGameOver = true;
+			gameState = GameState.GAMELOST;
 		}
 		
 	}
-	
+		
+
 	private void expose(){
-		if (hasNeighboors()){
-			exposeSelf();
-		}
-		else // Expand cells with recursion, for now the functionality is the same.
+		if (hasNeighboors()){  
+			exposeSelf();		//if you know what I mean >:D	
+			}
+		else // Expand cells with recursion
 		{
 			exposeSurrounding();
 		}
 	}
 	
-	public void exposeSurrounding(){
+	private void exposeSurrounding(){
 		final int surroundingCellCount=8;
 		
 		for (int i = 0; i < surroundingCellCount; i++) {
 			
-			//Coordinates for exposing neighbors (relative to the current cell):
+			//Relative co-ordinates to the middle cell.
 			int xOffset = 0;
 			int yOffset = 0; 
 			
 			switch (i) {
-			
+
 			case 0: {  xOffset=-1; yOffset=0;  }   break; //Left
 			case 1: {  xOffset=-1; yOffset=-1; }   break; //TopLeft
 			case 2: {  xOffset=0;  yOffset=-1; }   break; //Top
@@ -61,34 +65,18 @@ public class GameHandler {
 				expose();
 			}
 			
-	}
-		//For every surrounding cell that's not exposed:
-			//exposeTile(iterator)
-		
-		//Run this function on all neighbor cells that are not exposed and have a c
-		//Do this: Expose surrounding cells that are closed.
-	
-	
+		}
 	}
 	
 	private boolean isNeighborWithinBoundary(int xOffset, int yOffset){
-		//Needs field (cell array) to implement. 
-		//arrayWidth, arrayHeight, currentCellX, currentCellY;
-		//checkX = tile.getX() + xOffset
-		//checkY = tile.getY() + yOffset
-		//if ((checkX > 0) && (checkX < arrayWidth)) 
-		// and if ((checkY > 0) && (checkY < arrayHeight)) 
-		//		return true
-		//return false
-		return true;
-	}
-	public boolean isGameOver() {
-		return isGameOver;
-	}
-
-
-	public void setGameOver(boolean isGameOver) {
-		this.isGameOver = isGameOver;
+		int fieldWidth =  field.getWidth();
+		int fieldHeight = field.getHeight();
+		int checkX = tile.getX()+xOffset;
+		int checkY = tile.getY()+yOffset;
+		
+		if (((checkX >= 0) && (checkX <= fieldWidth)) && ((checkY >= 0) && (checkY <= fieldHeight)))
+			return true;
+		return false;
 	}
 
 
@@ -99,9 +87,9 @@ public class GameHandler {
 	
 	
 	private boolean winCondition(){
-		return true;
-		//Need field to implement
-		//exposeCount == field.getNumberOfCells() - field.getTotalMines(); //we have won when we expose all non-mined cells.
+		return false; //Cange this to true when Field functions are implimented.
+
+		//return exposeCount == field.getNumberOfCells() - field.getTotalMines(); 
 	}
 	
 	private boolean hasNeighboors(){
@@ -112,10 +100,30 @@ public class GameHandler {
 		return tile.isMine();
 	}
 	
-	private int getExposeCount(){
+	public int getExposeCount(){
 		return exposeCount;
 	}
 	
+	public GameState getGameState() {
+		return gameState;
+	}
+
+	public void setGameState(GameState gameState) {
+		this.gameState = gameState;
+	}
+
+	public Field getField() {
+		return field;
+	}
+
+	public void setField(Field field) {
+		this.field = field;
+	}
+
+	public void setExposeCount(int exposeCount) {
+		this.exposeCount = exposeCount;
+	}
+
 	enum GameState{
 		ONGOING,GAMEWON,GAMELOST;
 	}
