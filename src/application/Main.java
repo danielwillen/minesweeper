@@ -35,25 +35,17 @@ public class Main extends Application {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		
 
+		Field field = new Field();
+		Tile[][] fieldArray = field.newBlankField(10, 10);
+		printArray(fieldArray);
 		
-		//***TEMPORARY ONLY FOR TESTING***
-		Tile[][] testArray = new Tile[10][10];
-		for (int i = 0; i < testArray.length; i++) {
-			for (int j = 0; j < testArray.length; j++) {
-				testArray[j][i] = new Tile(false, j, i);
-			}
-		}
-		printArray(testArray);
-		//***TEMPORARY ONLY FOR TESTING***
-
 		canvas.setOnMousePressed(event->{
-			Tile tmptile = testArray[(int) event.getX()/unit][(int) event.getY()/unit];
-			System.out.println(tmptile.getX()/unit);
-			System.out.println(tmptile.getY()/unit);
+			Tile tmptile = fieldArray[(int) event.getX()/unit][(int) event.getY()/unit];
+			System.out.println(tmptile.getX());
+			System.out.println(tmptile.getY());
 			if(event.isPrimaryButtonDown()){
+				
 				//Leftclick
 				//RuleHandlerLeftClick.computetile(tmptile);
 			}

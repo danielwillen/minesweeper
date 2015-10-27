@@ -10,11 +10,12 @@ public class Field {
 	
 	
 	public Tile[][] newBlankField(int width, int height){
+
 		Tile field[][] = new Tile[width][height];
 		
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < hight; j++) {
-				field[i][j] = new Tile(false, j, i);
+				field[j][i] = new Tile(false, j, i);
 			}
 		}
 		return field;
