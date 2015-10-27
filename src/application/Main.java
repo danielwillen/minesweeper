@@ -51,13 +51,13 @@ public class Main extends Application {
 
 		canvas.setOnMousePressed(event->{
 			Tile tmptile = testArray[(int) event.getX()/unit][(int) event.getY()/unit];
-			System.out.println((int)event.getX()/unit);
-			System.out.println((int)event.getY()/unit);
+			System.out.println(tmptile.getX()/unit);
+			System.out.println(tmptile.getY()/unit);
 			if(event.isPrimaryButtonDown()){
 				System.out.println("Left klick");
 				//RuleHandlerLeftClick.computetile(tmptile);
 			}
-			if(event.isSecondaryButtonDown()){
+			else if(event.isSecondaryButtonDown()){
 				System.out.println("Right klick");
 				//RuleHandlerRightClick.computetile(tmptile);
 			}
