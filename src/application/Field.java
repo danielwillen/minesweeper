@@ -8,14 +8,14 @@ public class Field {
 	
 	
 	public Tile[][] newBlankField(int width, int height){
-		Tile field[][] = new Tile[width][height];
+		Tile tileArrar[][] = new Tile[width][height];
 		
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				field[y][x] = new Tile(false, x, y);
+				tileArrar[y][x] = new Tile(false, x, y);
 			}
 		}
-		return field;
+		return tileArrar;
 	}
 	
 	public void printField(Tile field[][]){
