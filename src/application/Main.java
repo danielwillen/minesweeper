@@ -54,11 +54,11 @@ public class Main extends Application {
 			System.out.println(tmptile.getX()/unit);
 			System.out.println(tmptile.getY()/unit);
 			if(event.isPrimaryButtonDown()){
-				System.out.println("Left klick");
+				//Leftclick
 				//RuleHandlerLeftClick.computetile(tmptile);
 			}
 			else if(event.isSecondaryButtonDown()){
-				System.out.println("Right klick");
+				//Rightclick
 				//RuleHandlerRightClick.computetile(tmptile);
 			}
 		});
