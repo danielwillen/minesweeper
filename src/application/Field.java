@@ -11,7 +11,7 @@ public class Field {
 		
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tileArray[y][x] = new Tile(false, x, y);
+				tileArray[x][y] = new Tile(false, x, y);
 			}
 		}
 		return tileArray;
