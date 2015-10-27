@@ -87,7 +87,7 @@ public class GameHandler {
 	
 	
 	private boolean winCondition(){
-		return false; //Cange this to true when Field functions are implimented.
+		return false; //Change this to true when Field functions are implemented.
 
 		//return exposeCount == field.getNumberOfCells() - field.getTotalMines(); 
 	}
