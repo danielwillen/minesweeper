@@ -39,24 +39,23 @@ public class Main extends Application {
 		Field field = new Field();
 		GameHandler gameHandler = new GameHandler(field);
 		Tile[][] fieldArray = field.newBlankField(10, 10);
+		UpdateField updateField = new UpdateField(this, field);
+		(new Thread(updateField)).start();
 		printArray(fieldArray);
+		
 
 		canvas.setOnMousePressed(event -> {
-			/*Tile tmptile = fieldArray[(int) event.getX() / unit][(int) event.getY() / unit];
-			System.out.println(tmptile.getX());
-			System.out.println(tmptile.getY());*/
 			if (event.isPrimaryButtonDown()) {
-				gameHandler.onClickPosition((int)event.getX()/unit,(int)event.getY()/unit);
+				gameHandler.onClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
 				// Leftclick
-				// RuleHandlerLeftClick.computetile(tmptile);
 			} else if (event.isSecondaryButtonDown()) {
 				// Rightclick
-				// RuleHandlerRightClick.computetile(tmptile);
 			}
 		});
 	}
 
 	public void printArray(Tile[][] field) {
+		gc.clearRect(0, 0, canvasX, canvasY);
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field.length; j++)
 				gc.drawImage(image, field[j][i].getX() * unit, field[j][i].getY() * unit, unit, unit);
