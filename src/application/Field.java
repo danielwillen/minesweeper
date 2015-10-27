@@ -4,18 +4,17 @@ public class Field {
 	public int height = 10;
 	public int width = 10;
 	int summa = 0;
-	int latjolajban = 0;
 	
 	
 	public Tile[][] newBlankField(int width, int height){
-		Tile tileArrar[][] = new Tile[width][height];
+		Tile tileArray[][] = new Tile[width][height];
 		
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tileArrar[y][x] = new Tile(false, x, y);
+				tileArray[y][x] = new Tile(false, x, y);
 			}
 		}
-		return tileArrar;
+		return tileArray;
 	}
 	
 	public void printField(Tile field[][]){
