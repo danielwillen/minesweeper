@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 public class Main extends Application {
@@ -36,20 +35,27 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		int[][] testArray = new int[10][10];
+		
+		//***TEMPORARY ONLY FOR TESTING***
+		Tile[][] testArray = new Tile[10][10];
 		for (int i = 0; i < testArray.length; i++) {
 			for (int j = 0; j < testArray[i].length; j++) {
-				testArray[j][i] = j + i;
+				testArray[j][i] = new Tile(false, j, i);
 			}
 		}
 		printArray(testArray);
-		
+		//***TEMPORARY ONLY FOR TESTING***
 	}
 	
-	public void printArray(int[][] field){
+	/**
+	 * @author Martin
+	 * @param field
+	 * Iterates through the field and prints it relative to the size of the canvas.
+	 */
+	public void printArray(Tile[][] field){
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field.length; j++) {
-				gc.drawImage(image, j* unit, i*unit, unit, unit);
+				gc.drawImage(image, field[j][i].getX() * unit, field[j][i].getY() * unit, unit, unit);
 			}
 		}
 	}
