@@ -3,13 +3,14 @@ package application;
 public class GameHandler {
 
 
-	Tile tile = new Tile(false, 5, 3); //Instead of new, swap with "field[x][y]".
+	//Field field = new Field();
 	private int exposeCount=0;
 	private boolean isGameOver=false;
 	private GameState gameState;
 	
 	GameHandler(){
 		
+//		Tile tile = field[][]
 		
 		if (tileIsMined()==false) {
 	
@@ -73,10 +74,10 @@ public class GameHandler {
 	private boolean isNeighborWithinBoundary(int xOffset, int yOffset){
 		//Needs field (cell array) to implement. 
 		//arrayWidth, arrayHeight, currentCellX, currentCellY;
-		//targetx = tile.getX() + xOffset
-		//targety = tile.getY() + yOffset
-		//if ((targetx > 0) && (targetx < arrayWidth)) 
-		// and if ((targety > 0) && (targety < arrayHeight)) 
+		//checkX = tile.getX() + xOffset
+		//checkY = tile.getY() + yOffset
+		//if ((checkX > 0) && (checkX < arrayWidth)) 
+		// and if ((checkY > 0) && (checkY < arrayHeight)) 
 		//		return true
 		//return false
 		return true;
