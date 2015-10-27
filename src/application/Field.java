@@ -1,8 +1,5 @@
 package application;
 
-import javafx.scene.control.SelectionModel;
-import javafx.scene.layout.TilePane;
-
 public class Field {
 	public int height = 10;
 	public int width = 10;
