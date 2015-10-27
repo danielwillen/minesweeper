@@ -38,7 +38,7 @@ public class Main extends Application {
 
 		Field field = new Field();
 		GameHandler gameHandler = new GameHandler(field);
-		Tile[][] fieldArray = field.newBlankField(10, 10);
+		Tile[][] fieldArray = field.getTileArray();
 		UpdateField updateField = new UpdateField(this, field);
 		(new Thread(updateField)).start();
 		printArray(fieldArray);
@@ -56,11 +56,8 @@ public class Main extends Application {
 	public void printArray(Tile[][] field) {
 		gc.clearRect(0, 0, canvasX, canvasY);
 		for (int i = 0; i < field.length; i++)
-			for (int j = 0; j < field.length; j++){
-				Image image = new Image(field[j][i].getImage());
-				gc.drawImage(image, field[j][i].getX() * unit, field[j][i].getY() * unit, unit, unit);
-//				gc.drawImage(new Image(field[j][i].getImage()), field[j][i].getX() * unit, field[j][i].getY() * unit, unit, unit);
-			}
+			for (int j = 0; j < field.length; j++)
+				gc.drawImage(new Image(field[j][i].getImage()), field[j][i].getX() * unit, field[j][i].getY() * unit, unit, unit);
 	}
 
 	public static void main(String[] args) {

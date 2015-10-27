@@ -9,7 +9,6 @@ public class Field {
 	
 	Tile[][] tileArray = newBlankField(height, width);
 	
-	
 	public Tile[][] newBlankField(int width, int height){
 		Random rand = new Random();
 		Tile tileArray[][] = new Tile[width][height];
