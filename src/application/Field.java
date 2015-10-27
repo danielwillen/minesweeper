@@ -4,6 +4,7 @@ public class Field {
 	public int height = 10;
 	public int width = 10;
 	int summa = 0;
+	int latjolajban = 0;
 	
 	
 	public Tile[][] newBlankField(int width, int height){
