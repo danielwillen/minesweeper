@@ -5,6 +5,14 @@ public class Tile {
 	private boolean mine, visible;
 	private int neighbour, x, y;
 
+	public Tile() {
+		this.mine = false;
+		this.neighbour = 0;
+		this.visible = false;
+		this.x = 0;
+		this.y = 0;
+	}
+	
 	public Tile(int x, int y) {
 		this.mine = false;
 		this.neighbour = 0;
