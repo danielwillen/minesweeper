@@ -10,7 +10,7 @@ public class Field {
 
 	public void fieldInit() {
 
-		Tile field[width][hight];
+		Tile[][] field = new Tile[width][hight];
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < hight; j++) {
