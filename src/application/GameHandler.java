@@ -37,8 +37,8 @@ public class GameHandler {
 	private void testExpose(Tile tile) {
 		for (int i = 0; i < directions.length; i++) {
 			for (int j = 0; j < directions.length; j++) {
-				if (tile.getX() + directions[j] > 0 && tile.getX() + directions[j] < field.getWidth()
-						&& tile.getY() + directions[i] > 0 && tile.getY() + directions[i] < field.getHeight()) {
+				if (tile.getX() + directions[j] >= 0 && tile.getX() + directions[j] < field.getWidth()
+						&& tile.getY() + directions[i] >= 0 && tile.getY() + directions[i] < field.getHeight()) {
 					if (directions[i] == 0 && directions[j] == 0) {
 					} else {
 						try {
