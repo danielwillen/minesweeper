@@ -9,13 +9,12 @@ public class GameHandler {
 	
 	GameHandler(Field field){
 		this.field = field;
-		
 	}
 
-	public void onClickPosiion(int x, int y){
-		tile = field.tileArray[x][y]; 
+	public void onClickPosition(int x, int y){
+		tile = field.getTileArray()[x][y]; 
 		
-		if (tileIsMined()==false) {
+		if (!tileIsMined()) {
 			expose();
 			if (winCondition()){
 				gameState = GameState.GAMEWON;
@@ -40,6 +39,15 @@ public class GameHandler {
 	
 	private void exposeSurrounding(){
 		final int surroundingCellCount=8;
+		
+		/*
+		Går att göra en array med offset positioner, kan bli lite smidigare typ
+		array = new int[]{-1,0,1}
+		for(i)
+			for(j)
+				xOffset = array[i]
+				yOffset = array[j]
+		 */		
 		
 		for (int i = 0; i < surroundingCellCount; i++) {
 			

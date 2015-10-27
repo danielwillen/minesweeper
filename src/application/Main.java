@@ -37,14 +37,16 @@ public class Main extends Application {
 		primaryStage.show();
 
 		Field field = new Field();
+		GameHandler gameHandler = new GameHandler(field);
 		Tile[][] fieldArray = field.newBlankField(10, 10);
 		printArray(fieldArray);
 
 		canvas.setOnMousePressed(event -> {
-			Tile tmptile = fieldArray[(int) event.getX() / unit][(int) event.getY() / unit];
+			/*Tile tmptile = fieldArray[(int) event.getX() / unit][(int) event.getY() / unit];
 			System.out.println(tmptile.getX());
-			System.out.println(tmptile.getY());
+			System.out.println(tmptile.getY());*/
 			if (event.isPrimaryButtonDown()) {
+				gameHandler.onClickPosition((int)event.getX()/unit,(int)event.getY()/unit);
 				// Leftclick
 				// RuleHandlerLeftClick.computetile(tmptile);
 			} else if (event.isSecondaryButtonDown()) {
@@ -54,12 +56,6 @@ public class Main extends Application {
 		});
 	}
 
-	/**
-	 * @author Martin
-	 * @param field
-	 *            Iterates through the field and prints it relative to the size
-	 *            of the canvas.
-	 */
 	public void printArray(Tile[][] field) {
 		for (int i = 0; i < field.length; i++)
 			for (int j = 0; j < field.length; j++)

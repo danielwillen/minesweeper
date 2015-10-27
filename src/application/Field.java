@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Random;
+
 public class Field {
 	public int height = 10;
 	public int width = 10;
@@ -9,11 +11,15 @@ public class Field {
 	
 	
 	public Tile[][] newBlankField(int width, int height){
+		Random rand = new Random();
 		Tile tileArray[][] = new Tile[width][height];
 		
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tileArray[y][x] = new Tile(false, x, y);
+				if(rand.nextInt(100) >= 90)
+					tileArray[y][x] = new Tile(true, x, y);
+				else
+					tileArray[y][x] = new Tile(false, x, y);
 			}
 		}
 		return tileArray;
@@ -39,6 +45,10 @@ public class Field {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public Tile[][] getTileArray() {
+		return tileArray;
 	}
 
 	public int getWidth() {
