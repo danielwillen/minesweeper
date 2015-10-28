@@ -2,24 +2,22 @@ package application;
 
 import java.util.Random;
 
-import javafx.stage.DirectoryChooser;
-
 public class Field {
-	private int height = 10;
-	private int width = 10;
-	private int mines = 10;
+	private int height;
+	private int width;
+	private Tile[][] tileArray;
+	int summa = 0;
+	private int mines = 20;
 
-	Tile[][] tileArray = newBlankField(width, height);
-
-	public Tile[][] newBlankField(int width, int height) {
-		Tile tileArray[][] = new Tile[width][height];
-
+	public void newBlankField(int width, int height) {
+		tileArray = new Tile[width][height];
+		this.height = height;
+		this.width = width;
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				tileArray[x][y] = new Tile(false, x, y);
 			}
 		}
-		return tileArray;
 	}
 
 	public void printField(Tile tileArray[][]) {
@@ -67,7 +65,6 @@ public class Field {
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
 					tileArray[x][y].setMine(true);
-					System.out.println("There will be mines... EVERYWHERE!");
 				}
 			}
 			minesLeft = 0;

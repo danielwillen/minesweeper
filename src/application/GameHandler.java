@@ -1,36 +1,25 @@
 package application;
 
-import java.util.ArrayList;
 
 public class GameHandler {
 
 	private int exposeCount = 0;
 	private GameState gameState = GameState.ONGOING;
 	private Field field;
-	private Tile tile;
 	private int[] directions;
-	private ArrayList<Tile> checkList;
-	private ArrayList<Tile> checkedList;
 
 	GameHandler(Field field) {
 		this.field = field;
 		this.directions = new int[] { -1, 0, 1 };
-		this.checkList = new ArrayList<>();
-		this.checkedList = new ArrayList<>();
 	}
 
 	public void onClickPosition(int x, int y) {
-		tile = field.getTileArray()[x][y];
-
-		if (!tileIsMined()) {
-			// expose();
-			if (tile.getNeighbour() <= 0) {
-				testExpose(tile);
-			} else {
-				tile.setVisible(true);
-			}
-
+		Tile tile = field.getTileArray()[x][y];
+		
+		if (!tileIsMined(tile)) {
+			testExpose(tile);
 		}
+//		expose(tile);
 		if (winCondition()) {
 			gameState = GameState.GAMEWON;
 		} else
@@ -46,132 +35,69 @@ public class GameHandler {
 		if (tile.getNeighbour() <= 0)
 			for (int i = 0; i < directions.length; i++)
 				for (int j = 0; j < directions.length; j++)
-					if ((directions[i] != 0 || directions[j] != 0) && tile.getX() + directions[j] >= 0
-							&& tile.getX() + directions[j] < field.getWidth() && tile.getY() + directions[i] >= 0
-							&& tile.getY() + directions[i] < field.getHeight()) {
+					if ((directions[i] != 0 || directions[j] != 0)
+							&& isWithinBounds(tile.getX() + directions[j], tile.getY() + directions[i])) {
 						Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY() + directions[i]];
-						if (!checkContains(checkedList, tmptile) && !checkContains(checkList, tmptile)
-								&& !tmptile.isVisible())
+						if (!tmptile.isVisible())
 							testExpose(tmptile);
 					}
 	}
 
-	private boolean checkContains(ArrayList<Tile> list, Tile tile) {
-		for (Tile listTile : list) {
-			if (tile == listTile) {
-				return true;
-			}
+	private boolean isWithinBounds(int j, int i) {
+		if (j >= 0 && j < field.getWidth() && i >= 0 && i < field.getHeight()) {
+			return true;
 		}
 		return false;
 	}
 
-	private void expose() {
-		if (hasNeighboors()) {
-			exposeSelf(); // if you know what I mean >:D
-		} else // Expand cells with recursion
-		{
-			exposeSurrounding();
+
+	private void expose(Tile tile) {
+		exposeCount++;
+		tile.setVisible(true);
+		if (!hasNeighboors(tile) && (!tileIsMined(tile))){
+			int xOffset, yOffset;
+			for (Direction direction : Direction.values()) {
+				xOffset = direction.getX();
+				yOffset = direction.getY();
+
+				if (isNeighborWithinBoundary(tile, xOffset, yOffset) && (!isNeighboorExposed(tile, xOffset, yOffset))) {
+					Tile neighbor = field.getTileArray()[tile.getX() + xOffset][tile.getY() + yOffset];
+					expose(neighbor);
+				}
+			}
 		}
 	}
 
-	private void exposeSurrounding() {
-		final int surroundingCellCount = 8;
+	private boolean isNeighboorExposed(Tile tile, int xOffset, int yOffset) {
+		int checkX = tile.getX() + xOffset;
+		int checkY = tile.getY() + yOffset;
+		Tile tmpTile = field.getTileArray()[checkX][checkY];
+		if (tmpTile.isVisible())
+			return true;
+		return false;
 
-		/*
-		 * Går att göra en array med offset positioner, kan bli lite smidigare
-		 * typ array = new int[]{-1,0,1} for(i) for(j) xOffset = array[i]
-		 * yOffset = array[j]
-		 */
-
-		for (int i = 0; i < surroundingCellCount; i++) {
-
-			// Relative co-ordinates to the middle cell.
-			int xOffset = 0;
-			int yOffset = 0;
-
-			switch (i) {
-
-			case 0: {
-				xOffset = -1;
-				yOffset = 0;
-			}
-				break; // Left
-			case 1: {
-				xOffset = -1;
-				yOffset = -1;
-			}
-				break; // TopLeft
-			case 2: {
-				xOffset = 0;
-				yOffset = -1;
-			}
-				break; // Top
-			case 3: {
-				xOffset = 1;
-				yOffset = -1;
-			}
-				break; // TopRight
-			case 4: {
-				xOffset = 1;
-				yOffset = 0;
-			}
-				break; // Right
-			case 5: {
-				xOffset = 1;
-				yOffset = 1;
-			}
-				break; // BottomRight
-			case 6: {
-				xOffset = 0;
-				yOffset = 1;
-			}
-				break; // Bottom
-			case 7: {
-				xOffset = -1;
-				yOffset = 1;
-			}
-				break; // BottomLeft
-
-			default:
-				break;
-			}
-
-			if (isNeighborWithinBoundary(xOffset, yOffset)) {
-				expose();
-			}
-
-		}
 	}
 
-	private boolean isNeighborWithinBoundary(int xOffset, int yOffset) {
+	private boolean isNeighborWithinBoundary(Tile tile, int xOffset, int yOffset) {
 		int fieldWidth = field.getWidth();
 		int fieldHeight = field.getHeight();
 		int checkX = tile.getX() + xOffset;
 		int checkY = tile.getY() + yOffset;
 
-		if (((checkX >= 0) && (checkX <= fieldWidth)) && ((checkY >= 0) && (checkY <= fieldHeight)))
+		if (((checkX >= 0) && (checkX <= fieldWidth - 1)) && ((checkY >= 0) && (checkY <= fieldHeight - 1)))
 			return true;
 		return false;
 	}
 
-	private void exposeSelf() {
-		exposeCount++;
-		tile.setVisible(true);
-	}
-
 	private boolean winCondition() {
-		return false; // Change this to true when Field functions are
-						// implemented.
-
-		// return exposeCount == field.getNumberOfCells() -
-		// field.getTotalMines();
+		 return exposeCount == field.numberOfTiles() - field.getMines();
 	}
 
-	private boolean hasNeighboors() {
+	private boolean hasNeighboors(Tile tile) {
 		return (tile.getNeighbour() > 0);
 	}
 
-	private boolean tileIsMined() {
+	private boolean tileIsMined(Tile tile) {
 		return tile.isMine();
 	}
 
@@ -201,6 +127,27 @@ public class GameHandler {
 
 	enum GameState {
 		ONGOING, GAMEWON, GAMELOST;
+	}
+
+	public enum Direction {
+
+		LEFT(-1, 0), RIGHT(1, 0), UP(0, -1), DOWN(0, 1), TOPLEFT(-1, -1), TOPRIGHT(1, -1), BOTLEFT(-1, 1), BOTRIGHT(1,1);
+
+		private int x;
+		private int y;
+
+		Direction(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public int getX() {
+			return x;
+		}
 	}
 
 	public void flagTile(int x, int y) {

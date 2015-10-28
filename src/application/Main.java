@@ -1,8 +1,6 @@
 
 package application;
 
-import java.time.LocalDateTime;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,26 +10,30 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 public class Main extends Application {
 
-	private int unit, canvasX, canvasY;
+	private int unit, canvasX, canvasY, sceneX, sceneY, tilesInX, tilesInY;
 	private GraphicsContext gc;
+	private Field field;
 
 	@Override
 	public void init() {
-		this.canvasX = 200;
-		this.canvasY = 200;
-		this.unit = canvasX / 10;
+		this.tilesInX = 15;
+		this.tilesInY = 25;
+		this.unit = 20;
+		this.sceneX = unit * tilesInX+10;
+		this.sceneY = unit * tilesInY+30;
+		this.canvasX = unit * tilesInX;
+		this.canvasY = unit * tilesInY;
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
 		VBox root = new VBox();
-		Scene scene = new Scene(root, 400, 400);
+		Scene scene = new Scene(root, sceneX, sceneY);
 		Canvas canvas = new Canvas(canvasX, canvasY);
 		gc = canvas.getGraphicsContext2D();
 		Button button = new Button("New Game");
@@ -46,17 +48,16 @@ public class Main extends Application {
 		primaryStage.setTitle("Minesweeper");
 		primaryStage.show();
 
-		Field field = new Field();
+		field = new Field();
 		GameHandler gameHandler = new GameHandler(field);
-		Tile[][] fieldArray = field.newBlankField(10, 10);
+		field.newBlankField(tilesInX, tilesInY);
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
-		printArray(fieldArray);
+		printArray(field.getTileArray());
 
 		canvas.setOnMousePressed(event -> {
 			if (event.isPrimaryButtonDown()) {
 				gameHandler.onClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
-				// Leftclick
 			} else if (event.isSecondaryButtonDown()) {
 				gameHandler.flagTile((int) event.getX() / unit, (int) event.getY() / unit);
 			}
@@ -74,12 +75,11 @@ public class Main extends Application {
 
 	}
 
-	public void printArray(Tile[][] field) {
+	public void printArray(Tile[][] fieldArray) {
 		gc.clearRect(0, 0, canvasX, canvasY);
-		for (int i = 0; i < field.length; i++)
-			for (int j = 0; j < field.length; j++)
-				gc.drawImage(new Image(field[j][i].getImage()), field[j][i].getX() * unit, field[j][i].getY() * unit,
-						unit, unit);
+		for (int i = 0; i < field.getHeight(); i++)
+			for (int j = 0; j < field.getWidth(); j++)
+				gc.drawImage(new Image(fieldArray[j][i].getImage()), fieldArray[j][i].getX() * unit, fieldArray[j][i].getY() * unit, unit, unit);
 	}
 	
 
