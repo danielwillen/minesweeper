@@ -23,26 +23,33 @@ public class GameHandler {
 		tile = field.getTileArray()[x][y];
 
 		if (!tileIsMined()) {
-			// expose();
-			testExpose(tile);
-			// if (winCondition()) {
-			// gameState = GameState.GAMEWON;
+			expose();
+			//testExpose(tile);
+			if (winCondition()) {
+			gameState = GameState.GAMEWON;
 		}
-		// } else {
-		// gameState = GameState.GAMELOST;
-		// }
+		} else {
+		gameState = GameState.GAMELOST;
+		}
 
 	}
 
 	private void testExpose(Tile tile) {
+		//loops through the directions array, so we get the tile from the origin tile
+		//plus the directions of index i and j, so [-1,-1], [0,-1], [1, -1] etc.
 		for (int i = 0; i < directions.length; i++) {
 			for (int j = 0; j < directions.length; j++) {
+				//if the tile is [0, 0] it's the same position as the original tile, so skip that one.
 				if (directions[i] != 0 || directions[j] != 0) {
 					if (tile.getX() + directions[j] >= 0 && tile.getX() + directions[j] < field.getWidth()
 						&& tile.getY() + directions[i] >= 0 && tile.getY() + directions[i] < field.getHeight()) {
 						Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY() + directions[i]];
+						//check if checkedlist and checklist already contains the tile we want to check
+						//if not, skip it.
 						if (!checkContains(checkedList, tmptile) && !checkContains(checkList, tmptile)) {
 							if (tmptile.getNeighbour() <= 0) {
+								//if it has no neighbours we can safely open the tile and go on to the
+								//neighbours.
 								checkList.add(tmptile);
 							}
 						}
@@ -50,6 +57,8 @@ public class GameHandler {
 				}
 			}
 		}
+		//when every tile has been iterated through we are done, every other time we check the next
+		//one in line.
 		if (!checkList.isEmpty()) {
 			tile.setVisible(true);
 			checkedList.add(tile);
@@ -60,7 +69,7 @@ public class GameHandler {
 				checkedList.clear();
 				checkList.clear();
 			}
-
+		//clear the lists so they don't carry over to the next click.
 		} else {
 			checkedList.clear();
 			checkList.clear();
