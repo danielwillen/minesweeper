@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -20,6 +21,7 @@ public class Main extends Application {
 
 	private int unit, canvasX, canvasY;
 	private GraphicsContext gc;
+	Button button = new Button("New Game");
 
 	@Override
 	public void init() {
@@ -30,11 +32,11 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+
 		VBox root = new VBox();
 		Scene scene = new Scene(root, 400, 400);
 		Canvas canvas = new Canvas(canvasX, canvasY);
 		gc = canvas.getGraphicsContext2D();
-		Button button = new Button("New Game");
 
 		root.getChildren().add(canvas);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -62,14 +64,14 @@ public class Main extends Application {
 			}
 			printArray(field.getTileArray());
 		});
-		
-		button.setOnAction(new EventHandler<ActionEvent>(){
+
+		button.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
-			public void handle(ActionEvent event) {				
-				start(primaryStage);				
+			public void handle(ActionEvent event) {
+				start(primaryStage);
 			}
-															
+
 		});
 
 	}
@@ -81,7 +83,6 @@ public class Main extends Application {
 				gc.drawImage(new Image(field[j][i].getImage()), field[j][i].getX() * unit, field[j][i].getY() * unit,
 						unit, unit);
 	}
-	
 
 	public static void main(String[] args) {
 		launch(args);

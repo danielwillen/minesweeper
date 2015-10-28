@@ -7,7 +7,7 @@ import javafx.stage.DirectoryChooser;
 public class Field {
 	public int height = 10;
 	public int width = 10;
-	int summa = 0;
+
 
 	Tile[][] tileArray = newBlankField(width, height);
 
@@ -121,11 +121,4 @@ public class Field {
 		this.width = width;
 	}
 
-	public int getSumma() {
-		return summa;
-	}
-
-	public void setSumma(int summa) {
-		this.summa = summa;
-	}
 }
