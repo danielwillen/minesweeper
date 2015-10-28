@@ -9,7 +9,7 @@ public class Field {
 	private int width;
 	private Tile[][] tileArray;
 	int summa = 0;
-
+	private int mines = 10;
 
 	public void newBlankField(int width, int height) {
 		tileArray = new Tile[width][height];
@@ -36,7 +36,6 @@ public class Field {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				tileArray[j][i].setNeighbour(countTileNeighbours(tileArray[j][i]));
-						
 			}
 		}
 	}
@@ -99,6 +98,10 @@ public class Field {
 
 	    return randomNum;
 	}
+	
+	public int numberOfTiles(){
+		return this.height*this.width;
+	}
 
 	public Tile[][] getTileArray() {
 		return tileArray;
@@ -119,12 +122,11 @@ public class Field {
 	public void setWidth(int width) {
 		this.width = width;
 	}
-
-	public int getSumma() {
-		return summa;
+	public int getMines() {
+		return mines;
 	}
 
-	public void setSumma(int summa) {
-		this.summa = summa;
+	public void setMines(int mines) {
+		this.mines = mines;
 	}
 }
