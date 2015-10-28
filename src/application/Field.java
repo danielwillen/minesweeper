@@ -99,6 +99,10 @@ public class Field {
 
 	    return randomNum;
 	}
+	
+	public numberOfTiles(){
+		return this.height*this.width;
+	}
 
 	public Tile[][] getTileArray() {
 		return tileArray;
