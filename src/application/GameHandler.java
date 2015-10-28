@@ -1,7 +1,5 @@
 package application;
 
-import java.util.ArrayList;
-
 public class GameHandler {
 
 	private int exposeCount = 0;
@@ -9,20 +7,15 @@ public class GameHandler {
 	private Field field;
 	private Tile tile;
 	private int[] directions;
-	private ArrayList<Tile> checkList;
-	private ArrayList<Tile> checkedList;
 
 	GameHandler(Field field) {
 		this.field = field;
 		this.directions = new int[] { -1, 0, 1 };
-		this.checkList = new ArrayList<>();
-		this.checkedList = new ArrayList<>();
 	}
 
 	public void onClickPosition(int x, int y) {
 		tile = field.getTileArray()[x][y];
 		if (!tileIsMined()) {
-			// expose();
 			testExpose(tile);
 		}
 		if (winCondition()) {
@@ -51,15 +44,6 @@ public class GameHandler {
 	private boolean isWithinBounds(int j, int i) {
 		if (j >= 0 && j < field.getWidth() && i >= 0 && i < field.getHeight()) {
 			return true;
-		}
-		return false;
-	}
-
-	private boolean checkContains(ArrayList<Tile> list, Tile tile) {
-		for (Tile listTile : list) {
-			if (tile == listTile) {
-				return true;
-			}
 		}
 		return false;
 	}

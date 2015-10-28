@@ -1,7 +1,5 @@
 package application;
 
-import javafx.scene.image.Image;
-
 public class Tile {
 
 	private boolean mine, visible, flagged;

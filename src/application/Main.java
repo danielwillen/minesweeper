@@ -1,8 +1,6 @@
 
 package application;
 
-import java.time.LocalDateTime;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
@@ -24,8 +21,8 @@ public class Main extends Application {
 
 	@Override
 	public void init() {
-		this.tilesInX = 10;
-		this.tilesInY = 10;
+		this.tilesInX = 15;
+		this.tilesInY = 25;
 		this.unit = 20;
 		this.sceneX = unit * tilesInX+10;
 		this.sceneY = unit * tilesInY+30;
