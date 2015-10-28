@@ -1,44 +1,54 @@
 package application;
 
+import java.util.ArrayList;
 
 public class GameHandler {
 
 	private int exposeCount = 0;
 	private GameState gameState = GameState.ONGOING;
 	private Field field;
+	private ArrayList<Tile> flaggedList;
 	private int[] directions;
 
 	GameHandler(Field field) {
 		this.field = field;
+		flaggedList = new ArrayList<Tile>();
 		this.directions = new int[] { -1, 0, 1 };
 	}
 
-	public void onClickPosition(int x, int y) {
+	public void onLeftClickPosition(int x, int y) {
 		Tile tile = field.getTileArray()[x][y];
-		
-		if (!tileIsMined(tile)) {
-			testExpose(tile);
+
+		if (!tile.isFlagged()) {
+			if (!tileIsMined(tile)) {
+				testExpose(tile);
+			} else {
+				tile.setVisible(true);
+				gameState = GameState.GAMELOST;
+			}
 		}
-//		expose(tile);
 		if (winCondition()) {
 			gameState = GameState.GAMEWON;
-		} else
-
-		{
-			gameState = GameState.GAMELOST;
 		}
+	}
 
+	public void onRightClickPosition(int x, int y) {
+		Tile tile = field.getTileArray()[x][y];
+		if (!tile.isVisible()) {
+			flagTile(tile);
+		}
 	}
 
 	private void testExpose(Tile tile) {
 		tile.setVisible(true);
-		if (tile.getNeighbour() <= 0)
+		exposeCount++;
+		if (tile.getNeighbour() <= 0 || !tile.isVisible())
 			for (int i = 0; i < directions.length; i++)
 				for (int j = 0; j < directions.length; j++)
 					if ((directions[i] != 0 || directions[j] != 0)
 							&& isWithinBounds(tile.getX() + directions[j], tile.getY() + directions[i])) {
 						Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY() + directions[i]];
-						if (!tmptile.isVisible())
+						if (!tmptile.isVisible() && !tmptile.isFlagged())
 							testExpose(tmptile);
 					}
 	}
@@ -50,11 +60,10 @@ public class GameHandler {
 		return false;
 	}
 
-
 	private void expose(Tile tile) {
 		exposeCount++;
 		tile.setVisible(true);
-		if (!hasNeighboors(tile) && (!tileIsMined(tile))){
+		if (!hasNeighboors(tile) && (!tileIsMined(tile))) {
 			int xOffset, yOffset;
 			for (Direction direction : Direction.values()) {
 				xOffset = direction.getX();
@@ -90,7 +99,7 @@ public class GameHandler {
 	}
 
 	private boolean winCondition() {
-		 return exposeCount == field.numberOfTiles() - field.getMines();
+		return exposeCount == field.numberOfTiles() - field.getMines();
 	}
 
 	private boolean hasNeighboors(Tile tile) {
@@ -125,13 +134,14 @@ public class GameHandler {
 		this.exposeCount = exposeCount;
 	}
 
-	enum GameState {
+	public enum GameState {
 		ONGOING, GAMEWON, GAMELOST;
 	}
 
 	public enum Direction {
 
-		LEFT(-1, 0), RIGHT(1, 0), UP(0, -1), DOWN(0, 1), TOPLEFT(-1, -1), TOPRIGHT(1, -1), BOTLEFT(-1, 1), BOTRIGHT(1,1);
+		LEFT(-1, 0), RIGHT(1, 0), UP(0, -1), DOWN(0, 1), TOPLEFT(-1, -1), TOPRIGHT(1, -1), BOTLEFT(-1, 1), BOTRIGHT(1,
+				1);
 
 		private int x;
 		private int y;
@@ -150,9 +160,27 @@ public class GameHandler {
 		}
 	}
 
-	public void flagTile(int x, int y) {
-		field.getTileArray()[x][y].setFlagged();
+	public void flagTile(Tile tile) {
+		if (tile.isFlagged()) {
+			flaggedList.remove(tile);
+			tile.toggleFlagged();
+		} else {
+			flaggedList.add(tile);
+			tile.toggleFlagged();
+		}
+		wonByFlagging();
+	}
 
+	private void wonByFlagging() {
+		int count = 0;
+		for (Tile tile : flaggedList) {
+			if (tile.isMine() && tile.isFlagged()) {
+				count++;
+			}
+		}
+		if (count == field.getMines()) {
+			gameState = GameState.GAMEWON;
+		}
 	}
 
 }

@@ -70,11 +70,15 @@ public class Tile {
 		this.visible = visible;
 	}
 
-	public void setFlagged() {
+	public void toggleFlagged() {
 		if (flagged)
 			this.flagged = false;
-		else
+		else 
 			this.flagged = true;
+	}
+	
+	public boolean isFlagged(){
+		return this.flagged;
 	}
 
 	public int getX() {
