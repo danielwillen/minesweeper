@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Random;
+
 public class Field {
 	public int height = 10;
 	public int width = 10;
@@ -50,17 +52,25 @@ public class Field {
 			// Så länge det finns minor kvar att lägga.
 			while (minesLeft > 0) {
 				// slumpa x och y-led med planens height och width som constraints
-				int currentX = 0; //Slumpa mellan 0 och width
-				int currentY = 0; //Slumpa mellan 0 och Height
+				int currentX = randInt(0, width); //Slumpa mellan 0 och width
+				int currentY = randInt(0, height); //Slumpa mellan 0 och Height
 				
 				// Kontrollera om det redan ligger en mina där.
-				if (!tileArray[currentX][currentY].isMine())	{
 				// Om inte, lägg ut mina och räkna ner antal mines som finns
 				// kvar att lägga (minesLeft)
+				if (!tileArray[currentX][currentY].isMine())	{
+					tileArray[currentX][currentY].setMine(true);
 					minesLeft--;
 				}
 			}
 		}
+	}
+	
+	public static int randInt(int min, int max) {
+	    Random rand;
+	    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+	    return randomNum;
 	}
 
 	public int getHeight() {
