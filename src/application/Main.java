@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class Main extends Application {
@@ -47,7 +46,7 @@ public class Main extends Application {
 				gameHandler.onClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
 				// Leftclick
 			} else if (event.isSecondaryButtonDown()) {
-				// Rightclick
+				gameHandler.flagTile((int) event.getX() / unit, (int) event.getY() / unit);
 			}
 			printArray(field.getTileArray());
 		});
