@@ -5,9 +5,9 @@ import java.util.Random;
 import javafx.stage.DirectoryChooser;
 
 public class Field {
-	public int height = 10;
-	public int width = 10;
-	int summa = 0;
+	private int height = 10;
+	private int width = 10;
+	private int mines = 10;
 
 	Tile[][] tileArray = newBlankField(width, height);
 
@@ -36,7 +36,6 @@ public class Field {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				tileArray[j][i].setNeighbour(countTileNeighbours(tileArray[j][i]));
-						
 			}
 		}
 	}
@@ -120,12 +119,11 @@ public class Field {
 	public void setWidth(int width) {
 		this.width = width;
 	}
-
-	public int getSumma() {
-		return summa;
+	public int getMines() {
+		return mines;
 	}
 
-	public void setSumma(int summa) {
-		this.summa = summa;
+	public void setMines(int mines) {
+		this.mines = mines;
 	}
 }

@@ -49,7 +49,7 @@ public class Main extends Application {
 		Field field = new Field();
 		GameHandler gameHandler = new GameHandler(field);
 		Tile[][] fieldArray = field.newBlankField(10, 10);
-		field.mineLayer(10);
+		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(fieldArray);
 
