@@ -46,7 +46,7 @@ public class Field {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if(j != 0 || i != 0){
-					if(tile.getX() + j > 0 && tile.getX() + j < width && tile.getY() + i > 0 && tile.getY() + i < height){
+					if(tile.getX() + j >= 0 && tile.getX() + j < width && tile.getY() + i >= 0 && tile.getY() + i < height){
 						if(tileArray[tile.getX() + j][tile.getY() + i].isMine()){
 							neighbourCount++;
 						}
