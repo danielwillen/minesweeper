@@ -39,6 +39,7 @@ public class Main extends Application {
 		GameHandler gameHandler = new GameHandler(field);
 		Tile[][] fieldArray = field.newBlankField(10, 10);
 		field.mineLayer(10);
+		field.setFieldNeighbours();
 		printArray(fieldArray);
 
 		canvas.setOnMousePressed(event -> {

@@ -2,6 +2,8 @@ package application;
 
 import java.util.Random;
 
+import javafx.stage.DirectoryChooser;
+
 public class Field {
 	public int height = 10;
 	public int width = 10;
@@ -28,6 +30,31 @@ public class Field {
 				System.out.println(" Mine: " + tileArray[x][y].isMine());
 			}
 		}
+	}
+	
+	public void setFieldNeighbours(){
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				tileArray[j][i].setNeighbour(countTileNeighbours(tileArray[j][i]));
+						
+			}
+		}
+	}
+	
+	private int countTileNeighbours(Tile tile){
+		int neighbourCount = 0;
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if(j != 0 || i != 0){
+					if(tile.getX() + j > 0 && tile.getX() + j < width && tile.getY() + i > 0 && tile.getY() + i < height){
+						if(tileArray[tile.getX() + j][tile.getY() + i].isMine()){
+							neighbourCount++;
+						}
+					}
+				}
+			}
+		}
+		return neighbourCount;
 	}
 
 	public Tile[][] mineLayer(int mines) {

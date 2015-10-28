@@ -23,8 +23,8 @@ public class GameHandler {
 		tile = field.getTileArray()[x][y];
 
 		if (!tileIsMined()) {
-			// expose();
-			testExpose(tile);
+			expose();
+			//testExpose(tile);
 			if (winCondition()) {
 				gameState = GameState.GAMEWON;
 			}
@@ -89,7 +89,6 @@ public class GameHandler {
 			exposeSelf(); // if you know what I mean >:D
 		} else // Expand cells with recursion
 		{
-			exposeSelf();
 			exposeSurrounding();
 		}
 	}
