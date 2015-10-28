@@ -38,15 +38,15 @@ public class Tile {
 		return mine;
 	}
 
-	public String getImage() {
+	public int getImage() {
 		if (this.flagged)
-			return "Image/flagged.jpg";
+			return 10;
 		if (!this.isVisible())
-			return "Image/hidden.jpg";
+			return 11;
 		else if (this.mine)
-			return "Image/bomb.jpg";
+			return 9;
 		else
-			return "Image/" + neighbour + ".jpg";
+			return neighbour;
 
 	}
 

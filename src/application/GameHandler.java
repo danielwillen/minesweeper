@@ -183,4 +183,8 @@ public class GameHandler {
 		}
 	}
 
+	public void updateTileImage(Tile tile) {
+		
+	}
+
 }
