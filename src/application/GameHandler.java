@@ -37,20 +37,15 @@ public class GameHandler {
 	private void testExpose(Tile tile) {
 		for (int i = 0; i < directions.length; i++) {
 			for (int j = 0; j < directions.length; j++) {
-				if (tile.getX() + directions[j] >= 0 && tile.getX() + directions[j] < field.getWidth()
+				if (directions[i] != 0 || directions[j] != 0) {
+					if (tile.getX() + directions[j] >= 0 && tile.getX() + directions[j] < field.getWidth()
 						&& tile.getY() + directions[i] >= 0 && tile.getY() + directions[i] < field.getHeight()) {
-					if (directions[i] == 0 && directions[j] == 0) {
-					} else {
-						try {
-							Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY()
-									+ directions[i]];
-							if (!checkContains(checkedList,tmptile) && !checkContains(checkList,tmptile)) {
-
-								if (tmptile.getNeighbour() <= 0) {
-									checkList.add(tmptile);
-								}
+						Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY() + directions[i]];
+						if (!checkContains(checkedList, tmptile) && !checkContains(checkList, tmptile)) {
+							
+							if (tmptile.getNeighbour() <= 0) {
+								checkList.add(tmptile);
 							}
-						} catch (ArrayIndexOutOfBoundsException e) {
 						}
 					}
 				}
@@ -60,18 +55,14 @@ public class GameHandler {
 			tile.setVisible(true);
 			checkedList.add(tile);
 			checkList.remove(tile);
-			System.out.println("checkList size is " + checkList.size());
-			System.out.println("checkedList size is " + checkedList.size());
-			if(!checkList.isEmpty())
+			if (!checkList.isEmpty())
 				testExpose(checkList.get(0));
-			else{
-				System.out.println("wat2");
+			else {
 				checkedList.clear();
 				checkList.clear();
 			}
-				
+
 		} else {
-			System.out.println("wat");
 			checkedList.clear();
 			checkList.clear();
 		}
@@ -80,7 +71,7 @@ public class GameHandler {
 
 	private boolean checkContains(ArrayList<Tile> list, Tile tile) {
 		for (Tile listTile : list) {
-			if(tile == listTile){
+			if (tile == listTile) {
 				return true;
 			}
 		}
