@@ -7,7 +7,7 @@ public class Field {
 	public int width = 10;
 	int summa = 0;
 
-	Tile[][] tileArray = newBlankField(height, width);
+	Tile[][] tileArray = newBlankField(width, height);
 
 	public Tile[][] newBlankField(int width, int height) {
 		Tile tileArray[][] = new Tile[width][height];
@@ -35,7 +35,7 @@ public class Field {
 
 		// Kontrollera att antal mines som ska läggas får plats på spelplanen
 		// (height*width)
-		if (mines >= height * width) {
+		if (mines > height * width) {
 			// Om inte, fyll skärmen med minor och meddela användaren att spelet
 			// kan bli lite för lätt att vinna.
 			for (int y = 0; y < height; y++) {
@@ -68,10 +68,14 @@ public class Field {
 	}
 	
 	public static int randInt(int min, int max) {
-	    Random rand;
+	    Random rand = new Random();
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
 
 	    return randomNum;
+	}
+
+	public Tile[][] getTileArray() {
+		return tileArray;
 	}
 
 	public int getHeight() {
