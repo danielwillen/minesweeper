@@ -33,6 +33,7 @@ public class Main extends Application {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
 		primaryStage.setScene(scene);
+		primaryStage.setTitle("Minesweeper");
 		primaryStage.show();
 
 		Field field = new Field();
