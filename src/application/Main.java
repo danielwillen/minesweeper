@@ -2,7 +2,6 @@
 package application;
 
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -39,7 +38,7 @@ public class Main extends Application {
 		Field field = new Field();
 		GameHandler gameHandler = new GameHandler(field);
 		Tile[][] fieldArray = field.newBlankField(10, 10);
-		field.mineLayer(fieldArray, 10);
+		field.mineLayer(10);
 		printArray(fieldArray);
 
 		canvas.setOnMousePressed(event -> {
@@ -49,7 +48,7 @@ public class Main extends Application {
 			} else if (event.isSecondaryButtonDown()) {
 				// Rightclick
 			}
-			printArray(fieldArray);
+			printArray(field.getTileArray());
 		});
 	}
 

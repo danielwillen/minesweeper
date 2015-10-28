@@ -14,7 +14,7 @@ public class Field {
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tileArray[y][x] = new Tile(false, x, y);
+				tileArray[x][y] = new Tile(false, x, y);
 			}
 		}
 		return tileArray;
@@ -30,9 +30,9 @@ public class Field {
 		}
 	}
 
-	public Tile[][] mineLayer(Tile tileArray[][], int mines) {
+	public Tile[][] mineLayer(int mines) {
 		int minesLeft = mines;
-
+		
 		// Kontrollera att antal mines som ska läggas får plats på spelplanen
 		// (height*width)
 		if (mines > height * width) {
@@ -52,8 +52,8 @@ public class Field {
 			// Så länge det finns minor kvar att lägga.
 			while (minesLeft > 0) {
 				// slumpa x och y-led med planens height och width som constraints
-				int currentX = randInt(0, width); //Slumpa mellan 0 och width
-				int currentY = randInt(0, height); //Slumpa mellan 0 och Height
+				int currentX = randInt(0, width-1); //Slumpa mellan 0 och width
+				int currentY = randInt(0, height-1); //Slumpa mellan 0 och Height
 				
 				// Kontrollera om det redan ligger en mina där.
 				// Om inte, lägg ut mina och räkna ner antal mines som finns

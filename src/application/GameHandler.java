@@ -42,7 +42,6 @@ public class GameHandler {
 						&& tile.getY() + directions[i] >= 0 && tile.getY() + directions[i] < field.getHeight()) {
 						Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY() + directions[i]];
 						if (!checkContains(checkedList, tmptile) && !checkContains(checkList, tmptile)) {
-							
 							if (tmptile.getNeighbour() <= 0) {
 								checkList.add(tmptile);
 							}
