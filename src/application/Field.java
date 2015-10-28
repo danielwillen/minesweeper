@@ -5,21 +5,22 @@ import java.util.Random;
 import javafx.stage.DirectoryChooser;
 
 public class Field {
-	public int height = 10;
-	public int width = 10;
+
+	private int height;
+	private int width;
+	private Tile[][] tileArray;
+	private int mines = 10;
 
 
-	Tile[][] tileArray = newBlankField(width, height);
-
-	public Tile[][] newBlankField(int width, int height) {
-		Tile tileArray[][] = new Tile[width][height];
-
+	public void newBlankField(int width, int height) {
+		tileArray = new Tile[width][height];
+		this.height = height;
+		this.width = width;
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				tileArray[x][y] = new Tile(false, x, y);
 			}
 		}
-		return tileArray;
 	}
 
 	public void printField(Tile tileArray[][]) {
@@ -36,7 +37,6 @@ public class Field {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				tileArray[j][i].setNeighbour(countTileNeighbours(tileArray[j][i]));
-						
 			}
 		}
 	}
@@ -68,7 +68,6 @@ public class Field {
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
 					tileArray[x][y].setMine(true);
-					System.out.println("There will be mines... EVERYWHERE!");
 				}
 			}
 			minesLeft = 0;
@@ -100,6 +99,10 @@ public class Field {
 
 	    return randomNum;
 	}
+	
+	public int numberOfTiles(){
+		return this.height*this.width;
+	}
 
 	public Tile[][] getTileArray() {
 		return tileArray;
@@ -121,4 +124,11 @@ public class Field {
 		this.width = width;
 	}
 
+	public int getMines() {
+		return mines;
+	}
+
+	public void setMines(int mines) {
+		this.mines = mines;
+	}
 }
