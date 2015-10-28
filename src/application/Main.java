@@ -39,6 +39,7 @@ public class Main extends Application {
 		Field field = new Field();
 		GameHandler gameHandler = new GameHandler(field);
 		Tile[][] fieldArray = field.getTileArray();
+		fieldArray = 
 		UpdateField updateField = new UpdateField(this, field);
 		(new Thread(updateField)).start();
 		printArray(fieldArray);

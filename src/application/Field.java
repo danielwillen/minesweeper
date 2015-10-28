@@ -30,7 +30,7 @@ public class Field {
 		}
 	}
 
-	public void mineLayer(Tile tileArray[][], int mines) {
+	public Tile[][] mineLayer(Tile tileArray[][], int mines) {
 		int minesLeft = mines;
 
 		// Kontrollera att antal mines som ska läggas får plats på spelplanen
@@ -64,6 +64,7 @@ public class Field {
 				}
 			}
 		}
+		return tileArray;
 	}
 	
 	public static int randInt(int min, int max) {
