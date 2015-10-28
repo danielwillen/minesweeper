@@ -21,15 +21,9 @@ public class GameHandler {
 
 	public void onClickPosition(int x, int y) {
 		tile = field.getTileArray()[x][y];
-
 		if (!tileIsMined()) {
 			// expose();
-			if (tile.getNeighbour() <= 0) {
-				testExpose(tile);
-			} else {
-				tile.setVisible(true);
-			}
-
+			testExpose(tile);
 		}
 		if (winCondition()) {
 			gameState = GameState.GAMEWON;
@@ -46,14 +40,19 @@ public class GameHandler {
 		if (tile.getNeighbour() <= 0)
 			for (int i = 0; i < directions.length; i++)
 				for (int j = 0; j < directions.length; j++)
-					if ((directions[i] != 0 || directions[j] != 0) && tile.getX() + directions[j] >= 0
-							&& tile.getX() + directions[j] < field.getWidth() && tile.getY() + directions[i] >= 0
-							&& tile.getY() + directions[i] < field.getHeight()) {
+					if ((directions[i] != 0 || directions[j] != 0)
+							&& isWithinBounds(tile.getX() + directions[j], tile.getY() + directions[i])) {
 						Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY() + directions[i]];
-						if (!checkContains(checkedList, tmptile) && !checkContains(checkList, tmptile)
-								&& !tmptile.isVisible())
+						if (!tmptile.isVisible())
 							testExpose(tmptile);
 					}
+	}
+
+	private boolean isWithinBounds(int j, int i) {
+		if (j >= 0 && j < field.getWidth() && i >= 0 && i < field.getHeight()) {
+			return true;
+		}
+		return false;
 	}
 
 	private boolean checkContains(ArrayList<Tile> list, Tile tile) {
@@ -76,13 +75,6 @@ public class GameHandler {
 
 	private void exposeSurrounding() {
 		final int surroundingCellCount = 8;
-
-		/*
-		 * Går att göra en array med offset positioner, kan bli lite smidigare
-		 * typ array = new int[]{-1,0,1} for(i) for(j) xOffset = array[i]
-		 * yOffset = array[j]
-		 */
-
 		for (int i = 0; i < surroundingCellCount; i++) {
 
 			// Relative co-ordinates to the middle cell.
