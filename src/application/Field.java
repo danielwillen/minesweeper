@@ -100,7 +100,7 @@ public class Field {
 	    return randomNum;
 	}
 	
-	public numberOfTiles(){
+	public int numberOfTiles(){
 		return this.height*this.width;
 	}
 
