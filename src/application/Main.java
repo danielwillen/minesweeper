@@ -25,14 +25,13 @@ public class Main extends Application {
 	Button button = new Button("New Game");
 	private Field field;
 
-
 	@Override
 	public void init() {
 		this.tilesInX = 10;
 		this.tilesInY = 10;
 		this.unit = 20;
-		this.sceneX = unit * tilesInX+10;
-		this.sceneY = unit * tilesInY+30;
+		this.sceneX = unit * tilesInX + 10;
+		this.sceneY = unit * tilesInY + 30;
 		this.canvasX = unit * tilesInX;
 		this.canvasY = unit * tilesInY;
 	}
@@ -86,7 +85,8 @@ public class Main extends Application {
 		gc.clearRect(0, 0, canvasX, canvasY);
 		for (int i = 0; i < field.getHeight(); i++)
 			for (int j = 0; j < field.getWidth(); j++)
-				gc.drawImage(new Image(fieldArray[j][i].getImage()), fieldArray[j][i].getX() * unit, fieldArray[j][i].getY() * unit, unit, unit);
+				gc.drawImage(new Image(fieldArray[j][i].getImage()), fieldArray[j][i].getX() * unit,
+						fieldArray[j][i].getY() * unit, unit, unit);
 	}
 
 	public static void main(String[] args) {
