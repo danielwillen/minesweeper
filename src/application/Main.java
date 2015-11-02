@@ -1,10 +1,5 @@
 
 package application;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import application.GameHandler.GameState;
 import javafx.application.Application;
@@ -25,6 +20,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -55,8 +51,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-
-		VBox root = new VBox();
+		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root, sceneX, sceneY);
 		Canvas canvas = new Canvas(canvasX, canvasY);
 		gc = canvas.getGraphicsContext2D();
@@ -68,14 +63,14 @@ public class Main extends Application {
 		MenuItem exit = new MenuItem("Exit");
 		MenuItem save = new MenuItem("Save");
 		MenuItem open = new MenuItem("Open");
+		MenuItem newgame = new MenuItem("New Game");
 
-		file.getItems().addAll(save, open, new SeparatorMenuItem(), exit);
+		file.getItems().addAll(newgame, save, open, new SeparatorMenuItem(), exit);
 		mb.getMenus().addAll(file, options);
-		
-		root.getChildren().addAll(mb,canvas);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		root.getChildren().add(button);	
 
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		root.setTop(mb);
+		root.setCenter(canvas);
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Minesweeper");
@@ -88,16 +83,33 @@ public class Main extends Application {
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
-		
-		save.setOnAction(event-> {
-			//insert functionality here
+
+		newgame.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				start(primaryStage);
+			}
+
 		});
 
-		open.setOnAction(event-> {
-			//insert functionality here
+		save.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+            fileChooser.showSaveDialog(primaryStage);
 		});
 
-		exit.setOnAction(event-> {
+		open.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+            fileChooser.showOpenDialog(primaryStage);
+            
+            
+            
+		});
+
+		exit.setOnAction(event -> {
 			Platform.exit();
 		});
 
@@ -113,61 +125,20 @@ public class Main extends Application {
 			}
 		});
 
-		button.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				start(primaryStage);
-			}
-	});
-		
-		save.setOnAction(new EventHandler<ActionEvent>(){;
-		
-        public void handle(ActionEvent event) {
-            FileChooser fileChooser = new FileChooser();
-
-            //Set extension filter
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("C:/test.savefile.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-            
-            //Show save file dialog
-            File file = fileChooser.showSaveDialog(primaryStage);
-            
-            if(file != null){
-                SaveFile("savefile",file);
-            }
-        }
-		
-    });
 	}
-		
-	    private void SaveFile(String filename ,File file){
-	        try {
-	            FileWriter fileWriter = null;
-	             
-	            fileWriter = new FileWriter(file);
-	            fileWriter.write(filename);
-	            fileWriter.close();
-	        } catch (IOException ex) {
-	            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-	        }
-	         
-	    }
-	
 
 	public void endText() {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFont(new Font("Impact", 72));
-		if(gameHandler.getGameState() == GameState.GAMEWON){
+		if (gameHandler.getGameState() == GameState.GAMEWON) {
 			gc.setFill(Color.GREEN);
-			gc.fillText("You won", canvasX/2, canvasY/2);
-		}
-		else if(gameHandler.getGameState() == GameState.GAMELOST){
+			gc.fillText("You won", canvasX / 2, canvasY / 2);
+		} else if (gameHandler.getGameState() == GameState.GAMELOST) {
 			gc.setFill(Color.RED);
-			gc.fillText("You lost", canvasX/2, canvasY/2);
+			gc.fillText("You lost", canvasX / 2, canvasY / 2);
 		}
-			
+
 	}
 
 	private void fetchImages() {
@@ -196,9 +167,6 @@ public class Main extends Application {
 
 			}
 	}
-	
-	
-	
 
 	public static void main(String[] args) {
 		launch(args);
