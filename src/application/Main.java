@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +14,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class Main extends Application {
 
@@ -21,12 +26,12 @@ public class Main extends Application {
 	private Field field;
 	private GameHandler gameHandler;
 	private Image[] imageArray;
-	
+
 	@Override
 	public void init() {
-		this.tilesInX = 25;
-		this.tilesInY = 20;
-		this.unit = 20;
+		this.tilesInX = 10;
+		this.tilesInY = 10;
+		this.unit = 25;
 		this.sceneX = unit * tilesInX + 10;
 		this.sceneY = unit * tilesInY + 30;
 		this.canvasX = unit * tilesInX;
@@ -68,6 +73,7 @@ public class Main extends Application {
 					gameHandler.onRightClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
 				}
 				printArray(field.getTileArray());
+				endText();
 			}
 		});
 
@@ -80,6 +86,21 @@ public class Main extends Application {
 
 		});
 
+	}
+
+	public void endText() {
+		gc.setTextAlign(TextAlignment.CENTER);
+		gc.setTextBaseline(VPos.CENTER);
+		gc.setFont(new Font("Impact", 72));
+		if(gameHandler.getGameState() == GameState.GAMEWON){
+			gc.setFill(Color.GREEN);
+			gc.fillText("You won", canvasX/2, canvasY/2);
+		}
+		else if(gameHandler.getGameState() == GameState.GAMELOST){
+			gc.setFill(Color.RED);
+			gc.fillText("You lost", canvasX/2, canvasY/2);
+		}
+			
 	}
 
 	private void fetchImages() {

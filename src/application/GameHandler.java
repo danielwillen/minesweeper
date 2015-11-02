@@ -40,17 +40,26 @@ public class GameHandler {
 	}
 
 	private void testExpose(Tile tile) {
-		tile.setVisible(true);
-		exposeCount++;
-		if (tile.getNeighbour() <= 0 || !tile.isVisible())
-			for (int i = 0; i < directions.length; i++)
-				for (int j = 0; j < directions.length; j++)
-					if ((directions[i] != 0 || directions[j] != 0)
-							&& isWithinBounds(tile.getX() + directions[j], tile.getY() + directions[i])) {
-						Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY() + directions[i]];
-						if (!tmptile.isVisible() && !tmptile.isFlagged())
-							testExpose(tmptile);
-					}
+		try {
+			if (!tile.isVisible()) {
+				tile.setVisible(true);
+				exposeCount++;
+				if (tile.getNeighbour() == 0)
+					for (int i = 0; i < directions.length; i++)
+						for (int j = 0; j < directions.length; j++)
+							if ((directions[i] != 0 || directions[j] != 0)
+									&& isWithinBounds(tile.getX() + directions[j], tile.getY() + directions[i])) {
+								Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY()
+										+ directions[i]];
+								if (!tmptile.isVisible() && !tmptile.isFlagged())
+									testExpose(tmptile);
+
+							}
+			}
+
+		} catch (StackOverflowError e) {
+			System.out.println("Stack Overflow");
+		}
 	}
 
 	private boolean isWithinBounds(int j, int i) {
@@ -99,6 +108,10 @@ public class GameHandler {
 	}
 
 	private boolean winCondition() {
+		System.out.println(exposeCount);
+		System.out.println(field.numberOfTiles() - field.getMines());
+		if (exposeCount == field.numberOfTiles() - field.getMines())
+			System.out.println("won by exposure");
 		return exposeCount == field.numberOfTiles() - field.getMines();
 	}
 
@@ -184,7 +197,7 @@ public class GameHandler {
 	}
 
 	public void updateTileImage(Tile tile) {
-		
+
 	}
 
 }
