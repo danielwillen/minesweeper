@@ -108,10 +108,6 @@ public class GameHandler {
 	}
 
 	private boolean winCondition() {
-		System.out.println(exposeCount);
-		System.out.println(field.numberOfTiles() - field.getMines());
-		if (exposeCount == field.numberOfTiles() - field.getMines())
-			System.out.println("won by exposure");
 		return exposeCount == field.numberOfTiles() - field.getMines();
 	}
 

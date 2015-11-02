@@ -37,8 +37,8 @@ public class Main extends Application {
 		this.tilesInX = 10;
 		this.tilesInY = 10;
 		this.unit = 25;
-		this.sceneX = unit * tilesInX + 10;
-		this.sceneY = unit * tilesInY + 30;
+		this.sceneX = unit * tilesInX + 50;
+		this.sceneY = unit * tilesInY + 50;
 		this.canvasX = unit * tilesInX;
 		this.canvasY = unit * tilesInY;
 		this.imageArray = new Image[12];
