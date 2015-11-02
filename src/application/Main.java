@@ -1,12 +1,13 @@
 
 package application;
-
 import application.GameHandler.GameState;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,7 +24,7 @@ public class Main extends Application {
 	private Field field;
 	private GameHandler gameHandler;
 	private Image[] imageArray;
-	
+
 	@Override
 	public void init() {
 		this.tilesInX = 30;
@@ -46,9 +47,8 @@ public class Main extends Application {
 
 		root.getChildren().add(canvas);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		root.getChildren().add(button);
-		root.setAlignment(Pos.CENTER);
-		button.setAlignment(Pos.TOP_RIGHT);
+		root.getChildren().add(button);	
+
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Minesweeper");
@@ -109,9 +109,8 @@ public class Main extends Application {
 						fieldArray[j][i].getY() * unit, unit, unit);
 
 			}
-	}
 
-	
+	}
 
 	public static void main(String[] args) {
 		launch(args);
