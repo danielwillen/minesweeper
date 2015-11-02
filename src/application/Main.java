@@ -47,7 +47,18 @@ public class Main extends Application {
 		gc = canvas.getGraphicsContext2D();
 		Button button = new Button("New Game");
 
-		root.getChildren().add(canvas);
+		MenuBar mb = new MenuBar();
+		Menu file = new Menu("File");
+		Menu options = new Menu("Options");
+
+		MenuItem exit = new MenuItem("Exit");
+		MenuItem save = new MenuItem("Save");
+		MenuItem open = new MenuItem("Open");
+
+		file.getItems().addAll(save, open, new SeparatorMenuItem(), exit);
+		mb.getMenus().addAll(file, options);
+		
+		root.getChildren().addAll(mb,canvas);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		root.getChildren().add(button);
 		root.setAlignment(Pos.CENTER);
@@ -65,17 +76,6 @@ public class Main extends Application {
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
 		
-		MenuBar mb = new MenuBar();
-		Menu file = new Menu("File");
-		Menu options = new Menu("Options");
-
-		MenuItem exit = new MenuItem("Exit");
-		MenuItem save = new MenuItem("Save");
-		MenuItem open = new MenuItem("Open");
-
-		file.getItems().addAll(save, open, new SeparatorMenuItem(), exit);
-		mb.getMenus().addAll(file, options);
-
 		save.setOnAction(event-> {
 			//insert functionality here
 		});
