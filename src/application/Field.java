@@ -2,14 +2,13 @@ package application;
 
 import java.util.Random;
 
-import javafx.stage.DirectoryChooser;
-
 public class Field {
 
 	private int height;
 	private int width;
 	private Tile[][] tileArray;
-	private int mines = 10;
+	int summa = 0;
+	private int mines = 300;
 
 
 	public void newBlankField(int width, int height) {

@@ -1,7 +1,5 @@
 package application;
 
-import javafx.scene.image.Image;
-
 public class Tile {
 
 	private boolean mine, visible, flagged;
@@ -40,15 +38,15 @@ public class Tile {
 		return mine;
 	}
 
-	public String getImage() {
+	public int getImage() {
 		if (this.flagged)
-			return "Image/flagged.jpg";
+			return 10;
 		if (!this.isVisible())
-			return "Image/hidden.jpg";
+			return 11;
 		else if (this.mine)
-			return "Image/bomb.jpg";
+			return 9;
 		else
-			return "Image/" + neighbour + ".jpg";
+			return neighbour;
 
 	}
 
@@ -72,11 +70,15 @@ public class Tile {
 		this.visible = visible;
 	}
 
-	public void setFlagged() {
+	public void toggleFlagged() {
 		if (flagged)
 			this.flagged = false;
-		else
+		else 
 			this.flagged = true;
+	}
+	
+	public boolean isFlagged(){
+		return this.flagged;
 	}
 
 	public int getX() {

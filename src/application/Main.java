@@ -1,8 +1,7 @@
 
 package application;
 
-import java.time.LocalDateTime;
-
+import application.GameHandler.GameState;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,8 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
@@ -24,16 +21,19 @@ public class Main extends Application {
 
 	Button button = new Button("New Game");
 	private Field field;
-
+	private GameHandler gameHandler;
+	private Image[] imageArray;
+	
 	@Override
 	public void init() {
-		this.tilesInX = 10;
-		this.tilesInY = 10;
+		this.tilesInX = 30;
+		this.tilesInY = 30;
 		this.unit = 20;
 		this.sceneX = unit * tilesInX + 10;
 		this.sceneY = unit * tilesInY + 30;
 		this.canvasX = unit * tilesInX;
 		this.canvasY = unit * tilesInY;
+		this.imageArray = new Image[12];
 	}
 
 	@Override
@@ -54,20 +54,23 @@ public class Main extends Application {
 		primaryStage.setTitle("Minesweeper");
 		primaryStage.show();
 
+		fetchImages();
 		field = new Field();
-		GameHandler gameHandler = new GameHandler(field);
+		gameHandler = new GameHandler(field);
 		field.newBlankField(tilesInX, tilesInY);
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
 
 		canvas.setOnMousePressed(event -> {
-			if (event.isPrimaryButtonDown()) {
-				gameHandler.onClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
-			} else if (event.isSecondaryButtonDown()) {
-				gameHandler.flagTile((int) event.getX() / unit, (int) event.getY() / unit);
+			if (gameHandler.getGameState() == GameState.ONGOING) {
+				if (event.isPrimaryButtonDown()) {
+					gameHandler.onLeftClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
+				} else if (event.isSecondaryButtonDown()) {
+					gameHandler.onRightClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
+				}
+				printArray(field.getTileArray());
 			}
-			printArray(field.getTileArray());
 		});
 
 		button.setOnAction(new EventHandler<ActionEvent>() {
@@ -81,13 +84,34 @@ public class Main extends Application {
 
 	}
 
+	private void fetchImages() {
+		imageArray[0] = new Image("Image/0.jpg");
+		imageArray[1] = new Image("Image/1.jpg");
+		imageArray[2] = new Image("Image/2.jpg");
+		imageArray[3] = new Image("Image/3.jpg");
+		imageArray[4] = new Image("Image/4.jpg");
+		imageArray[5] = new Image("Image/5.jpg");
+		imageArray[6] = new Image("Image/6.jpg");
+		imageArray[7] = new Image("Image/7.jpg");
+		imageArray[8] = new Image("Image/8.jpg");
+		imageArray[9] = new Image("Image/bomb.jpg");
+		imageArray[10] = new Image("Image/flagged.jpg");
+		imageArray[11] = new Image("Image/hidden.jpg");
+	}
+
 	public void printArray(Tile[][] fieldArray) {
 		gc.clearRect(0, 0, canvasX, canvasY);
 		for (int i = 0; i < field.getHeight(); i++)
-			for (int j = 0; j < field.getWidth(); j++)
-				gc.drawImage(new Image(fieldArray[j][i].getImage()), fieldArray[j][i].getX() * unit,
+
+			for (int j = 0; j < field.getWidth(); j++) {
+				gameHandler.updateTileImage(field.getTileArray()[j][i]);
+				gc.drawImage(imageArray[fieldArray[j][i].getImage()], fieldArray[j][i].getX() * unit,
 						fieldArray[j][i].getY() * unit, unit, unit);
+
+			}
 	}
+
+	
 
 	public static void main(String[] args) {
 		launch(args);
