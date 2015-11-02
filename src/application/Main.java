@@ -3,6 +3,7 @@ package application;
 
 import application.GameHandler.GameState;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -12,6 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -47,7 +52,18 @@ public class Main extends Application {
 		gc = canvas.getGraphicsContext2D();
 		Button button = new Button("New Game");
 
-		root.getChildren().add(canvas);
+		MenuBar mb = new MenuBar();
+		Menu file = new Menu("File");
+		Menu options = new Menu("Options");
+
+		MenuItem exit = new MenuItem("Exit");
+		MenuItem save = new MenuItem("Save");
+		MenuItem open = new MenuItem("Open");
+
+		file.getItems().addAll(save, open, new SeparatorMenuItem(), exit);
+		mb.getMenus().addAll(file, options);
+		
+		root.getChildren().addAll(mb,canvas);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		root.getChildren().add(button);
 		root.setAlignment(Pos.CENTER);
@@ -64,6 +80,18 @@ public class Main extends Application {
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
+		
+		save.setOnAction(event-> {
+			//insert functionality here
+		});
+
+		open.setOnAction(event-> {
+			//insert functionality here
+		});
+
+		exit.setOnAction(event-> {
+			Platform.exit();
+		});
 
 		canvas.setOnMousePressed(event -> {
 			if (gameHandler.getGameState() == GameState.ONGOING) {
