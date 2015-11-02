@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class HighScore {
 
@@ -17,7 +18,7 @@ public class HighScore {
 	 */
 	
 	
-	private String readHighScore() {
+	public String readHighScore() {
 		String text = null;
 		String highScore = "";
 		File file = new File("highscore.txt");
@@ -43,7 +44,7 @@ public class HighScore {
 		return highScore;
 	}
 	
-	private void writeToHighScore(String score) {	//spelaren som parameter
+	public void writeToHighScore(String score) {	//spelaren som parameter
 		File file = new File("highscore.txt");
 		ArrayList<String> scores = new ArrayList<>();	//skapar ArrayList
 		String pathname = file.getPath();
@@ -51,13 +52,18 @@ public class HighScore {
 		String newHighScore = "";
 		
 		for (String s:highScore)	//lägger till gamla high score i ArrayList
-			scores.add(s);
+			if (s.length() > 0)
+				scores.add(s);
 		
 		scores.add(score);		//lägger till nya spelaren
-		Collections.sort(scores); //bör fixa bättre sortering!!!
+		Collections.sort(scores); //bör fixa bättre sortering!!! typ göra egen comparator som
+								//tar ut poängen med parseInteger/liknande
 		
-		for (String s:scores)		//bakar ihop allt till en string, för att slippa fula formatet man får med toString()
-			newHighScore += s + System.lineSeparator();
+		//bakar ihop allt till en string, för att slippa fula formatet man får med toString()
+		Iterator<String> iterator=  scores.iterator();
+		while (iterator.hasNext()) {
+			newHighScore += iterator.next() + System.lineSeparator();
+		}
 		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(pathname))) {
 			bw.write(newHighScore);
