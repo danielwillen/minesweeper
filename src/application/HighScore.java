@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class HighScore {
 
@@ -15,7 +17,7 @@ public class HighScore {
 	 */
 	
 	
-	public String readHighScore() {
+	private String readHighScore() {
 		String text = null;
 		String highScore = "";
 		File file = new File("highscore.txt");
@@ -37,17 +39,28 @@ public class HighScore {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+				
 		return highScore;
 	}
 	
-	public void writeToHighScore() {	//lägg till själva listan(?) som argument
+	private void writeToHighScore(String score) {	//spelaren som parameter
 		File file = new File("highscore.txt");
-		String highScore = readHighScore();
+		ArrayList<String> scores = new ArrayList<>();	//skapar ArrayList
 		String pathname = file.getPath();
-		highScore += "Stefan : 1000000000000";
+		String[] highScore = readHighScore().split(System.lineSeparator()); //skapar array av gamla high score
+		String newHighScore = "";
+		
+		for (String s:highScore)	//lägger till gamla high score i ArrayList
+			scores.add(s);
+		
+		scores.add(score);		//lägger till nya spelaren
+		Collections.sort(scores); //bör fixa bättre sortering!!!
+		
+		for (String s:scores)		//bakar ihop allt till en string, för att slippa fula formatet man får med toString()
+			newHighScore += s + System.lineSeparator();
+		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(pathname))) {
-			bw.write(highScore);
+			bw.write(newHighScore);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
