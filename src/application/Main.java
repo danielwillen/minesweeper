@@ -1,5 +1,11 @@
 
 package application;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import application.GameHandler.GameState;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -7,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -112,10 +119,41 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				start(primaryStage);
 			}
+	});
+		
+		save.setOnAction(new EventHandler<ActionEvent>(){;
+		
+        public void handle(ActionEvent event) {
+            FileChooser fileChooser = new FileChooser();
 
-		});
-
+            //Set extension filter
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("C:/test.savefile.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+            
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(primaryStage);
+            
+            if(file != null){
+                SaveFile("savefile",file);
+            }
+        }
+		
+    });
 	}
+		
+	    private void SaveFile(String filename ,File file){
+	        try {
+	            FileWriter fileWriter = null;
+	             
+	            fileWriter = new FileWriter(file);
+	            fileWriter.write(filename);
+	            fileWriter.close();
+	        } catch (IOException ex) {
+	            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+	        }
+	         
+	    }
+	
 
 	public void endText() {
 		gc.setTextAlign(TextAlignment.CENTER);
@@ -157,8 +195,10 @@ public class Main extends Application {
 						fieldArray[j][i].getY() * unit, unit, unit);
 
 			}
-
 	}
+	
+	
+	
 
 	public static void main(String[] args) {
 		launch(args);
