@@ -2,6 +2,18 @@ package application;
 
 public class Tile {
 
+	/*
+	 * 
+	 * 0 = !visible
+	 * 1 = !visible & flagged
+	 * 2 = !visible & mine
+	 * 3 = !visible & flagged & mine
+	 * 4 = visible
+	 * width
+	 * height
+	 * 
+	*/
+	
 	private boolean mine, visible, flagged;
 	private int neighbour, x, y;
 

@@ -39,21 +39,43 @@ public class GameHandler {
 		}
 	}
 
+	// Recursive method for finding neighbouring tiles.
 	private void testExpose(Tile tile) {
+		// With a width and height too large a stack overflow will happen (too
+		// many recursive actions).
 		try {
+			// If the tile is not already visible, make it visible and increase
+			// the counter
 			if (!tile.isVisible()) {
 				tile.setVisible(true);
 				exposeCount++;
+				// Only if the tile has no mined neighbours will its neighbours
+				// be checked as well.
 				if (tile.getNeighbour() == 0)
+					// The array "directions" consists of -1,0,1 so the 8
+					// neighbours of the original tile will be checked in order,
+					// starting with OriginalTileX - 1, OriginalTileY - 1. After
+					// that OriginalTileX, OriginalTileY - 1 will be checked
+					// etc. If both directions are 0, the tile on that position
+					// is the original tile so don't check it.
 					for (int i = 0; i < directions.length; i++)
 						for (int j = 0; j < directions.length; j++)
+							// Check if the target tile is inside the playfield.
 							if ((directions[i] != 0 || directions[j] != 0)
 									&& isWithinBounds(tile.getX() + directions[j], tile.getY() + directions[i])) {
+								// Create a temporary file for less method
+								// calls.
 								Tile tmptile = field.getTileArray()[tile.getX() + directions[j]][tile.getY()
 										+ directions[i]];
+								// If the neighbour tile is not visible and it
+								// is not flagged (flagged tiles cannot be
+								// exposed), run the method again and find the
+								// neighbours of tmpTile. This way we won't go
+								// back on ourselves and check tiles we've
+								// already checked, since they're visible will
+								// return true.
 								if (!tmptile.isVisible() && !tmptile.isFlagged())
 									testExpose(tmptile);
-
 							}
 			}
 
