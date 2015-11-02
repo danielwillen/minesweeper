@@ -2,18 +2,27 @@
 package application;
 import application.GameHandler.GameState;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.stage.FileChooser;
+import javafx.geometry.VPos;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class Main extends Application {
 
@@ -27,9 +36,9 @@ public class Main extends Application {
 
 	@Override
 	public void init() {
-		this.tilesInX = 30;
-		this.tilesInY = 30;
-		this.unit = 20;
+		this.tilesInX = 10;
+		this.tilesInY = 10;
+		this.unit = 25;
 		this.sceneX = unit * tilesInX + 10;
 		this.sceneY = unit * tilesInY + 30;
 		this.canvasX = unit * tilesInX;
@@ -45,7 +54,18 @@ public class Main extends Application {
 		Canvas canvas = new Canvas(canvasX, canvasY);
 		gc = canvas.getGraphicsContext2D();
 
-		root.getChildren().add(canvas);
+		MenuBar mb = new MenuBar();
+		Menu file = new Menu("File");
+		Menu options = new Menu("Options");
+
+		MenuItem exit = new MenuItem("Exit");
+		MenuItem save = new MenuItem("Save");
+		MenuItem open = new MenuItem("Open");
+
+		file.getItems().addAll(save, open, new SeparatorMenuItem(), exit);
+		mb.getMenus().addAll(file, options);
+		
+		root.getChildren().addAll(mb,canvas);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		root.getChildren().add(button);	
 
@@ -61,6 +81,18 @@ public class Main extends Application {
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
+		
+		save.setOnAction(event-> {
+			//insert functionality here
+		});
+
+		open.setOnAction(event-> {
+			//insert functionality here
+		});
+
+		exit.setOnAction(event-> {
+			Platform.exit();
+		});
 
 		canvas.setOnMousePressed(event -> {
 			if (gameHandler.getGameState() == GameState.ONGOING) {
@@ -70,6 +102,7 @@ public class Main extends Application {
 					gameHandler.onRightClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
 				}
 				printArray(field.getTileArray());
+				endText();
 			}
 		});
 
@@ -82,6 +115,21 @@ public class Main extends Application {
 
 		});
 
+	}
+
+	public void endText() {
+		gc.setTextAlign(TextAlignment.CENTER);
+		gc.setTextBaseline(VPos.CENTER);
+		gc.setFont(new Font("Impact", 72));
+		if(gameHandler.getGameState() == GameState.GAMEWON){
+			gc.setFill(Color.GREEN);
+			gc.fillText("You won", canvasX/2, canvasY/2);
+		}
+		else if(gameHandler.getGameState() == GameState.GAMELOST){
+			gc.setFill(Color.RED);
+			gc.fillText("You lost", canvasX/2, canvasY/2);
+		}
+			
 	}
 
 	private void fetchImages() {

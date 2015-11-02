@@ -8,8 +8,7 @@ public class Field {
 	private int width;
 	private Tile[][] tileArray;
 	int summa = 0;
-	private int mines = 300;
-
+	private int mines = 1;
 
 	public void newBlankField(int width, int height) {
 		tileArray = new Tile[width][height];
