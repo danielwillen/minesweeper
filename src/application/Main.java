@@ -18,6 +18,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -46,11 +47,10 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		VBox root = new VBox();
+		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root, sceneX, sceneY);
 		Canvas canvas = new Canvas(canvasX, canvasY);
 		gc = canvas.getGraphicsContext2D();
-		Button button = new Button("New Game");
 
 		MenuBar mb = new MenuBar();
 		Menu file = new Menu("File");
@@ -59,15 +59,14 @@ public class Main extends Application {
 		MenuItem exit = new MenuItem("Exit");
 		MenuItem save = new MenuItem("Save");
 		MenuItem open = new MenuItem("Open");
+		MenuItem newgame = new MenuItem("New Game");
 
-		file.getItems().addAll(save, open, new SeparatorMenuItem(), exit);
+		file.getItems().addAll(newgame, save, open, new SeparatorMenuItem(), exit);
 		mb.getMenus().addAll(file, options);
 		
-		root.getChildren().addAll(mb,canvas);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		root.getChildren().add(button);
-		root.setAlignment(Pos.CENTER);
-		button.setAlignment(Pos.TOP_RIGHT);
+		root.setTop(mb);
+		root.setCenter(canvas);
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Minesweeper");
@@ -80,6 +79,15 @@ public class Main extends Application {
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
+		
+		newgame.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				start(primaryStage);
+			}
+			
+		});
 		
 		save.setOnAction(event-> {
 			//insert functionality here
@@ -105,14 +113,6 @@ public class Main extends Application {
 			}
 		});
 
-		button.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				start(primaryStage);
-			}
-
-		});
 
 	}
 
