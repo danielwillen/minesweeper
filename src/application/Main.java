@@ -24,8 +24,8 @@ public class Main extends Application {
 	
 	@Override
 	public void init() {
-		this.tilesInX = 67;
-		this.tilesInY = 35;
+		this.tilesInX = 25;
+		this.tilesInY = 20;
 		this.unit = 20;
 		this.sceneX = unit * tilesInX + 10;
 		this.sceneY = unit * tilesInY + 30;
