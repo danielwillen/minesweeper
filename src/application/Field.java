@@ -3,6 +3,7 @@ package application;
 import java.util.Random;
 
 public class Field {
+
 	private int height;
 	private int width;
 	private Tile[][] tileArray;
@@ -120,6 +121,7 @@ public class Field {
 	public void setWidth(int width) {
 		this.width = width;
 	}
+
 	public int getMines() {
 		return mines;
 	}

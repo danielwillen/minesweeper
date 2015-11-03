@@ -10,7 +10,9 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,6 +34,8 @@ public class Main extends Application {
 
 	private int unit, canvasX, canvasY, sceneX, sceneY, tilesInX, tilesInY;
 	private GraphicsContext gc;
+
+	Button button = new Button("New Game");
 	private Field field;
 	private GameHandler gameHandler;
 	private Image[] imageArray;
@@ -67,7 +71,7 @@ public class Main extends Application {
 
 		file.getItems().addAll(newgame, new SeparatorMenuItem(), option, save, open, new SeparatorMenuItem(), exit);
 		mb.getMenus().addAll(file, options);
-		
+
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		root.setTop(mb);
 		root.setCenter(canvas);
@@ -83,9 +87,9 @@ public class Main extends Application {
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
-		
+
 		newgame.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				start(primaryStage);
@@ -101,11 +105,23 @@ public class Main extends Application {
 			//insert functionality here
 		});
 
-		open.setOnAction(event-> {
-			//insert functionality here
+		save.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+            fileChooser.showSaveDialog(primaryStage);
 		});
 
-		exit.setOnAction(event-> {
+		open.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+            fileChooser.showOpenDialog(primaryStage);
+            
+            
+            
+		});
+
+		exit.setOnAction(event -> {
 			Platform.exit();
 		});
 
@@ -120,7 +136,6 @@ public class Main extends Application {
 				endText();
 			}
 		});
-
 
 	}
 	
@@ -145,15 +160,14 @@ public class Main extends Application {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFont(new Font("Impact", 72));
-		if(gameHandler.getGameState() == GameState.GAMEWON){
+		if (gameHandler.getGameState() == GameState.GAMEWON) {
 			gc.setFill(Color.GREEN);
-			gc.fillText("You won", canvasX/2, canvasY/2);
-		}
-		else if(gameHandler.getGameState() == GameState.GAMELOST){
+			gc.fillText("You won", canvasX / 2, canvasY / 2);
+		} else if (gameHandler.getGameState() == GameState.GAMELOST) {
 			gc.setFill(Color.RED);
-			gc.fillText("You lost", canvasX/2, canvasY/2);
+			gc.fillText("You lost", canvasX / 2, canvasY / 2);
 		}
-			
+
 	}
 
 	private void fetchImages() {
@@ -174,6 +188,7 @@ public class Main extends Application {
 	public void printArray(Tile[][] fieldArray) {
 		gc.clearRect(0, 0, canvasX, canvasY);
 		for (int i = 0; i < field.getHeight(); i++)
+
 			for (int j = 0; j < field.getWidth(); j++) {
 				gameHandler.updateTileImage(field.getTileArray()[j][i]);
 				gc.drawImage(imageArray[fieldArray[j][i].getImage()], fieldArray[j][i].getX() * unit,
