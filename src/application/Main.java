@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.stage.Modality;
@@ -17,12 +18,19 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.input.InputMethodRequests;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -88,14 +96,14 @@ public class Main extends Application {
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
 
-		newgame.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				start(primaryStage);
-			}
-			
+		newgame.setOnAction(event->{
+			start(primaryStage);
 		});
+
+//			@Override
+//			public void handle(ActionEvent event) {
+//			}
+			
 		
 		option.setOnAction(event-> {
 			optionsWindow(primaryStage);
@@ -142,18 +150,60 @@ public class Main extends Application {
 	private void optionsWindow(Stage primaryStage){
 		Stage optionsStage = new Stage();
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, sceneX, sceneY);
+		GridPane gPane = new GridPane();
+		HBox hbox = new HBox();
+		Scene scene = new Scene(root, 300, 150);
+		optionsStage.setResizable(false);
+		
+		Label label = new Label("Custom Field");
+		Label label2 = new Label("Width");
+		Label label3 = new Label("Height");
+		TextField textFieldX = new TextField(String.valueOf(field.getWidth()));
+		TextField textFieldY = new TextField(String.valueOf(field.getHeight()));
+		
+		Button acceptBtn = new Button("OK");
+		Button cancelBtn = new Button("Cancel");
+		
+		root.setPadding(new Insets(10,10,10,10));;
+		root.setTop(label);
+		root.setCenter(gPane);
+		root.setBottom(hbox);
+		
+		acceptBtn.setPrefWidth(75);
+		cancelBtn.setPrefWidth(75);
+		
+		textFieldX.setPrefWidth(40);
+		textFieldY.setPrefWidth(40);
+		
+		gPane.setAlignment(Pos.CENTER_LEFT);
+		gPane.setHgap(10);
+		gPane.setVgap(10);
+		gPane.add(label2, 1, 0);
+		gPane.add(textFieldX, 2, 0);
+		gPane.add(label3, 1, 1);
+		gPane.add(textFieldY, 2, 1);
+		
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
 		optionsStage.initModality(Modality.WINDOW_MODAL);
 		optionsStage.initOwner(primaryStage);
 		optionsStage.setScene(scene);
 		optionsStage.setTitle("Options");
-		optionsStage.showAndWait();
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//		final Popup popup = new Popup();
-//		popup.setX(10);
-//		popup.setY(10);
-//		popup.getContent().addAll(new Circle(500,500,50,Color.BLACK));
-//		popup.show(primaryStage);
+		optionsStage.show();
+		
+		hbox.getChildren().addAll(acceptBtn,cancelBtn);
+		hbox.setAlignment(Pos.BASELINE_RIGHT);
+		
+		acceptBtn.setOnAction(event->{
+			field.setWidth(Integer.parseInt(textFieldX.getText()));
+			field.setHeight(Integer.parseInt(textFieldY.getText()));
+			start(primaryStage);
+		});
+
+		cancelBtn.setOnAction(event->{
+			field.setHeight(Integer.parseInt(textFieldX.getText()));
+			
+		});
 	}
 
 	public void endText() {

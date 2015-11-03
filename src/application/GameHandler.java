@@ -9,6 +9,7 @@ public class GameHandler {
 	private Field field;
 	private ArrayList<Tile> flaggedList;
 	private int[] directions;
+	private int flagCount;
 
 	GameHandler(Field field) {
 		this.field = field;
@@ -192,6 +193,7 @@ public class GameHandler {
 	}
 
 	public void flagTile(Tile tile) {
+		if(tile.isMine() && tile.isFlagged())
 		if (tile.isFlagged()) {
 			flaggedList.remove(tile);
 			tile.toggleFlagged();
