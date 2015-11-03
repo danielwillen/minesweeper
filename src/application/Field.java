@@ -8,7 +8,7 @@ public class Field {
 	private int width;
 	private Tile[][] tileArray;
 	int summa = 0;
-	private int mines = 10;
+	private int mines;
 
 	public void newBlankField(int width, int height) {
 		tileArray = new Tile[width][height];
@@ -57,6 +57,7 @@ public class Field {
 
 	public Tile[][] mineLayer(int mines) {
 		int minesLeft = mines;
+		this.mines = mines;
 		
 		// Kontrollera att antal mines som ska läggas får plats på spelplanen
 		// (height*width)
