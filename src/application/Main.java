@@ -1,6 +1,12 @@
 
 package application;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import application.GameHandler.GameState;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,10 +23,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -39,6 +47,8 @@ public class Main extends Application {
 	private Field field;
 	private GameHandler gameHandler;
 	private Image[] imageArray;
+	private Text actionStatus;
+	HighScore highscore = new HighScore();
 
 	@Override
 	public void init() {
@@ -94,31 +104,46 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				start(primaryStage);
 			}
-			
+
 		});
-		
-		option.setOnAction(event-> {
+
+		option.setOnAction(event -> {
 			optionsWindow(primaryStage);
-		});
-		
-		save.setOnAction(event-> {
-			//insert functionality here
 		});
 
 		save.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-            fileChooser.showSaveDialog(primaryStage);
+			FileChooser fileChooser = new FileChooser();
+			FileChooser.ExtensionFilter extensionfilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+			fileChooser.getExtensionFilters().add(extensionfilter);
+			File savedFile = fileChooser.showSaveDialog(primaryStage);
+			if (savedFile != null) {
+				
+				try {
+					String text = highscore.readHighScore();
+					saveFile(text, savedFile);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+			
 		});
 
 		open.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
-            fileChooser.showOpenDialog(primaryStage);
-            
-            
-            
+
+			FileChooser fileChooser = new FileChooser();
+
+			File selectedFile = fileChooser.showOpenDialog(null);
+			if (selectedFile != null) {
+				actionStatus.setText("File selected: " + selectedFile.getName());
+			}
+
+			else {
+				actionStatus.setText("File Error.");
+
+			}
+
 		});
 
 		exit.setOnAction(event -> {
@@ -138,8 +163,8 @@ public class Main extends Application {
 		});
 
 	}
-	
-	private void optionsWindow(Stage primaryStage){
+
+	private void optionsWindow(Stage primaryStage) {
 		Stage optionsStage = new Stage();
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root, sceneX, sceneY);
@@ -149,11 +174,11 @@ public class Main extends Application {
 		optionsStage.setTitle("Options");
 		optionsStage.showAndWait();
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//		final Popup popup = new Popup();
-//		popup.setX(10);
-//		popup.setY(10);
-//		popup.getContent().addAll(new Circle(500,500,50,Color.BLACK));
-//		popup.show(primaryStage);
+		// final Popup popup = new Popup();
+		// popup.setX(10);
+		// popup.setY(10);
+		// popup.getContent().addAll(new Circle(500,500,50,Color.BLACK));
+		// popup.show(primaryStage);
 	}
 
 	public void endText() {
@@ -168,6 +193,18 @@ public class Main extends Application {
 			gc.fillText("You lost", canvasX / 2, canvasY / 2);
 		}
 
+	}
+
+	private void saveFile(String text ,File savedfile) throws IOException {
+		// Creates a new file and writes the txtArea contents into it
+		try{ 	
+		savedfile.setWritable(true);
+		FileWriter writer = new FileWriter(savedfile);
+		writer.write(text);
+		writer.close();
+		}catch (IOException ex) {
+          Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+	}
 	}
 
 	private void fetchImages() {
