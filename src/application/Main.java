@@ -1,6 +1,7 @@
 
 package application;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.stage.Modality;
@@ -23,14 +25,23 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.input.InputMethodRequests;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -40,33 +51,32 @@ import javafx.scene.text.TextAlignment;
 
 public class Main extends Application {
 
-	private int unit, canvasX, canvasY, sceneX, sceneY, tilesInX, tilesInY;
+	private int unit, tilesInX, tilesInY, mines;
 	private GraphicsContext gc;
 
 	Button button = new Button("New Game");
+	HighScore highscore = new HighScore();
+    private Desktop desktop = Desktop.getDesktop();
 	private Field field;
 	private GameHandler gameHandler;
 	private Image[] imageArray;
-	private Text actionStatus;
-	HighScore highscore = new HighScore();
+	private long timeStart;
+	private long timePassed;
 
 	@Override
 	public void init() {
 		this.tilesInX = 10;
 		this.tilesInY = 10;
+		this.mines = 10;
 		this.unit = 25;
-		this.sceneX = unit * tilesInX + 50;
-		this.sceneY = unit * tilesInY + 50;
-		this.canvasX = unit * tilesInX;
-		this.canvasY = unit * tilesInY;
 		this.imageArray = new Image[12];
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, sceneX, sceneY);
-		Canvas canvas = new Canvas(canvasX, canvasY);
+		Scene scene = new Scene(root, (unit * tilesInX) + 50, (unit * tilesInY) + 50);
+		Canvas canvas = new Canvas(unit * tilesInX, unit * tilesInY);
 		gc = canvas.getGraphicsContext2D();
 
 		MenuBar mb = new MenuBar();
@@ -94,18 +104,17 @@ public class Main extends Application {
 		field = new Field();
 		gameHandler = new GameHandler(field);
 		field.newBlankField(tilesInX, tilesInY);
-		field.mineLayer(field.getMines());
+		field.mineLayer(mines);
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
 
-		newgame.setOnAction(new EventHandler<ActionEvent>() {
+		timeStart = System.currentTimeMillis();
 
-			@Override
-			public void handle(ActionEvent event) {
-				start(primaryStage);
-			}
 
+		newgame.setOnAction(event -> {
+			start(primaryStage);
 		});
+
 
 		option.setOnAction(event -> {
 			optionsWindow(primaryStage);
@@ -127,23 +136,30 @@ public class Main extends Application {
 				}
 
 			}
-			
+		});
+
+		save.setOnAction(event -> {
+			FileChooser fileChooser = new FileChooser();
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+			fileChooser.getExtensionFilters().add(extFilter);
+			fileChooser.showSaveDialog(primaryStage);
 		});
 
 		open.setOnAction(event -> {
 
-			FileChooser fileChooser = new FileChooser();
 
+			FileChooser fileChooser = new FileChooser();
 			File selectedFile = fileChooser.showOpenDialog(null);
-			if (selectedFile != null) {
-				actionStatus.setText("File selected: " + selectedFile.getName());
+			if(selectedFile != null){
+				openFile(selectedFile);
+				
 			}
+
 
 			else {
-				actionStatus.setText("File Error.");
+				System.out.println("Unable to select a File");
 
 			}
-
 		});
 
 		exit.setOnAction(event -> {
@@ -167,18 +183,82 @@ public class Main extends Application {
 	private void optionsWindow(Stage primaryStage) {
 		Stage optionsStage = new Stage();
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, sceneX, sceneY);
+		GridPane gPane = new GridPane();
+		HBox hbox = new HBox();
+		Scene scene = new Scene(root, 300, 150);
+
+		Label label = new Label("Custom Minefield");
+		Label label2 = new Label("Width");
+		Label label3 = new Label("Height");
+		Label label4 = new Label("Mines");
+		Label warningLabel = new Label();
+
+		TextField textFieldX = new TextField(String.valueOf(field.getWidth()));
+		TextField textFieldY = new TextField(String.valueOf(field.getHeight()));
+		TextField textFieldMines = new TextField(String.valueOf(field.getMines()));
+
+		Button acceptBtn = new Button("New Game");
+		Button cancelBtn = new Button("Cancel");
+
+		optionsStage.setResizable(false);
+
+		root.setPadding(new Insets(10, 10, 10, 10));
+		root.setTop(label);
+		root.setCenter(gPane);
+		root.setBottom(hbox);
+
+		warningLabel.setTextFill(Color.RED);
+		acceptBtn.setPrefWidth(75);
+		cancelBtn.setPrefWidth(75);
+		textFieldX.setPrefWidth(40);
+		textFieldY.setPrefWidth(40);
+		textFieldMines.setPrefWidth(40);
+
+		gPane.setAlignment(Pos.CENTER_LEFT);
+		gPane.setHgap(10);
+		gPane.setVgap(10);
+		gPane.add(label2, 1, 0);
+		gPane.add(textFieldX, 2, 0);
+		gPane.add(label3, 1, 1);
+		gPane.add(textFieldY, 2, 1);
+		gPane.add(label4, 1, 2);
+		gPane.add(textFieldMines, 2, 2);
+
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
 		optionsStage.initModality(Modality.WINDOW_MODAL);
 		optionsStage.initOwner(primaryStage);
 		optionsStage.setScene(scene);
 		optionsStage.setTitle("Options");
-		optionsStage.showAndWait();
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		// final Popup popup = new Popup();
-		// popup.setX(10);
-		// popup.setY(10);
-		// popup.getContent().addAll(new Circle(500,500,50,Color.BLACK));
-		// popup.show(primaryStage);
+		optionsStage.show();
+
+		hbox.setSpacing(10);
+		hbox.getChildren().addAll(warningLabel, acceptBtn, cancelBtn);
+		hbox.setAlignment(Pos.BASELINE_RIGHT);
+
+		acceptBtn.setOnAction(event -> {
+			try {
+				int tmpTilesX, tmpTilesY, tmpMineAmount;
+				tmpTilesX = (Integer.parseInt(textFieldX.getText()));
+				tmpTilesY = (Integer.parseInt(textFieldY.getText()));
+				tmpMineAmount = (Integer.parseInt(textFieldMines.getText()));
+				if (tmpMineAmount <= (tmpTilesX * tmpTilesY) * 0.85) {
+					tilesInX = (Integer.parseInt(textFieldX.getText()));
+					tilesInY = (Integer.parseInt(textFieldY.getText()));
+					mines = (Integer.parseInt(textFieldMines.getText()));
+					optionsStage.close();
+					start(primaryStage);
+				} else {
+					warningLabel.setText("Too many mines");
+				}
+			} catch (IllegalArgumentException e) {
+				warningLabel.setText("Invalid input");
+			}
+		});
+
+		cancelBtn.setOnAction(event -> {
+			optionsStage.close();
+		});
 	}
 
 	public void endText() {
@@ -187,24 +267,42 @@ public class Main extends Application {
 		gc.setFont(new Font("Impact", 72));
 		if (gameHandler.getGameState() == GameState.GAMEWON) {
 			gc.setFill(Color.GREEN);
-			gc.fillText("You won", canvasX / 2, canvasY / 2);
+			gc.fillText("You won", (unit * tilesInX) / 2, (unit * tilesInY) / 2);
+
+			timePassed = System.currentTimeMillis() - timeStart; // detta är
+																	// spelarens
+																	// poäng
 		} else if (gameHandler.getGameState() == GameState.GAMELOST) {
 			gc.setFill(Color.RED);
-			gc.fillText("You lost", canvasX / 2, canvasY / 2);
+			gc.fillText("You lost", (unit * tilesInX) / 2, (unit * tilesInY) / 2);
 		}
 
 	}
 
-	private void saveFile(String text ,File savedfile) throws IOException {
+	private void saveFile(String text, File savedfile) throws IOException {
 		// Creates a new file and writes the txtArea contents into it
-		try{ 	
-		savedfile.setWritable(true);
-		FileWriter writer = new FileWriter(savedfile);
-		writer.write(text);
-		writer.close();
-		}catch (IOException ex) {
-          Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+		try {
+			savedfile.setWritable(true);
+			FileWriter writer = new FileWriter(savedfile);
+			writer.write(text);
+			writer.close();
+		} catch (IOException ex) {
+			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
+		
+	    private void openFile(File file) {			
+	        try {
+	            desktop.open(file);
+	        } catch (IOException ex) {
+	            Logger.getLogger(
+	                Main.class.getName()).log(
+	                    Level.SEVERE, null, ex
+	                );
+		}
+	        
+		
+	    
 	}
 
 	private void fetchImages() {
@@ -223,9 +321,8 @@ public class Main extends Application {
 	}
 
 	public void printArray(Tile[][] fieldArray) {
-		gc.clearRect(0, 0, canvasX, canvasY);
+		gc.clearRect(0, 0, unit * tilesInX, unit * tilesInY);
 		for (int i = 0; i < field.getHeight(); i++)
-
 			for (int j = 0; j < field.getWidth(); j++) {
 				gameHandler.updateTileImage(field.getTileArray()[j][i]);
 				gc.drawImage(imageArray[fieldArray[j][i].getImage()], fieldArray[j][i].getX() * unit,

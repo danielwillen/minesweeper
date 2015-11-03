@@ -205,8 +205,12 @@ public class GameHandler {
 	private void wonByFlagging() {
 		int count = 0;
 		for (Tile tile : flaggedList) {
-			if (tile.isMine() && tile.isFlagged()) {
+			if (tile.isMine()) {
 				count++;
+				System.out.println(count);
+			}else{
+				count--;
+				System.out.println(count);
 			}
 		}
 		if (count == field.getMines()) {
