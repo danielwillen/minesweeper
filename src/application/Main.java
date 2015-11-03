@@ -47,6 +47,8 @@ public class Main extends Application {
 	private Field field;
 	private GameHandler gameHandler;
 	private Image[] imageArray;
+	private long timeStart;
+	private long timePassed;
 
 	@Override
 	public void init() {
@@ -95,6 +97,8 @@ public class Main extends Application {
 		field.mineLayer(field.getMines());
 		field.setFieldNeighbours();
 		printArray(field.getTileArray());
+		
+		timeStart = System.currentTimeMillis();
 
 		newgame.setOnAction(event->{
 			start(primaryStage);
@@ -213,6 +217,8 @@ public class Main extends Application {
 		if (gameHandler.getGameState() == GameState.GAMEWON) {
 			gc.setFill(Color.GREEN);
 			gc.fillText("You won", canvasX / 2, canvasY / 2);
+			
+			timePassed = System.currentTimeMillis() - timeStart;	//detta är spelarens poäng
 		} else if (gameHandler.getGameState() == GameState.GAMELOST) {
 			gc.setFill(Color.RED);
 			gc.fillText("You lost", canvasX / 2, canvasY / 2);

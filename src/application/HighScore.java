@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class HighScore {
@@ -56,8 +57,16 @@ public class HighScore {
 				scores.add(s);
 		
 		scores.add(score);		//lägger till nya spelaren
-		Collections.sort(scores); //bör fixa bättre sortering!!! typ göra egen comparator som
-								//tar ut poängen med parseInteger/liknande
+		//Collections.sort(scores);
+		//sorterar efter poäng. spelare måste läggas till som sträng i formatet "poäng:namn"
+		Collections.sort(scores, new Comparator<String>() {
+		    public int compare(String a, String b) {
+		        return Integer.signum(fixString(a) - fixString(b));
+		    }
+		    private int fixString(String in) {
+		        return Integer.parseInt(in.substring(0, in.indexOf(':')));
+		    }
+		});
 		
 		//bakar ihop allt till en string, för att slippa fula formatet man får med toString()
 		Iterator<String> iterator=  scores.iterator();
