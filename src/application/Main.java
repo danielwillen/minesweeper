@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -21,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -60,8 +63,9 @@ public class Main extends Application {
 		MenuItem save = new MenuItem("Save");
 		MenuItem open = new MenuItem("Open");
 		MenuItem newgame = new MenuItem("New Game");
+		MenuItem option = new MenuItem("Options");
 
-		file.getItems().addAll(newgame, save, open, new SeparatorMenuItem(), exit);
+		file.getItems().addAll(newgame, new SeparatorMenuItem(), option, save, open, new SeparatorMenuItem(), exit);
 		mb.getMenus().addAll(file, options);
 		
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -89,6 +93,10 @@ public class Main extends Application {
 			
 		});
 		
+		option.setOnAction(event-> {
+			optionsWindow(primaryStage);
+		});
+		
 		save.setOnAction(event-> {
 			//insert functionality here
 		});
@@ -114,6 +122,23 @@ public class Main extends Application {
 		});
 
 
+	}
+	
+	private void optionsWindow(Stage primaryStage){
+		Stage optionsStage = new Stage();
+		BorderPane root = new BorderPane();
+		Scene scene = new Scene(root, sceneX, sceneY);
+		optionsStage.initModality(Modality.WINDOW_MODAL);
+		optionsStage.initOwner(primaryStage);
+		optionsStage.setScene(scene);
+		optionsStage.setTitle("Options");
+		optionsStage.showAndWait();
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+//		final Popup popup = new Popup();
+//		popup.setX(10);
+//		popup.setY(10);
+//		popup.getContent().addAll(new Circle(500,500,50,Color.BLACK));
+//		popup.show(primaryStage);
 	}
 
 	public void endText() {
