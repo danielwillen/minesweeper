@@ -179,7 +179,7 @@ public class Main extends Application {
 					gameHandler.onRightClickPosition((int) event.getX() / unit, (int) event.getY() / unit);
 				}
 				printArray(field.getTileArray());
-				endText();
+				endText(primaryStage);
 			}
 		});
 
@@ -266,7 +266,7 @@ public class Main extends Application {
 		});
 	}
 
-	public void endText() {
+	public void endText(Stage primaryStage) {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFont(new Font("Impact", 72));
@@ -277,11 +277,50 @@ public class Main extends Application {
 			timePassed = System.currentTimeMillis() - timeStart; // detta är
 																	// spelarens
 																	// poäng
+			//testing!
+			highScoreWindow(primaryStage);
 		} else if (gameHandler.getGameState() == GameState.GAMELOST) {
 			gc.setFill(Color.RED);
 			gc.fillText("You lost", (unit * tilesInX) / 2, (unit * tilesInY) / 2);
+			//testing!
+			highScoreWindow(primaryStage);
 		}
 
+	}
+	
+	private void highScoreWindow(Stage primaryStage) {
+		Stage highScoreStage = new Stage();
+		BorderPane root = new BorderPane();
+		Scene scene = new Scene(root, 300, 150);
+		Label label;
+		
+		if (gameHandler.getGameState() == GameState.GAMEWON) {
+			HBox hb = new HBox();
+			Label name = new Label("Enter name:");
+			TextField tf = new TextField();
+			
+			hb.getChildren().addAll(name, tf);
+			root.setBottom(hb);
+			
+			tf.setOnAction(event-> {
+				String score = "1000" + ":" + tf.getText();
+				highscore.writeToHighScore(score);
+			});
+		}
+		
+		label = new Label(highscore.readHighScore());
+		
+		root.setCenter(label);
+		label.setAlignment(Pos.CENTER);
+		
+		highScoreStage.setResizable(false);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+		highScoreStage.initModality(Modality.WINDOW_MODAL);
+		highScoreStage.initOwner(primaryStage);
+		highScoreStage.setScene(scene);
+		highScoreStage.setTitle("High score");
+		highScoreStage.show();
 	}
 
 	private void saveFile(String text, File savedfile) throws IOException {
