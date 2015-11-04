@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.Stage;
 
 import application.GameHandler.GameState;
@@ -61,6 +62,7 @@ public class Main extends Application {
 
 	Button button = new Button("New Game");
 	HighScore highscore = new HighScore();
+	private MediaPlayer mediaPlayer;
 	private Desktop desktop = Desktop.getDesktop();
 	private Field field;
 	private GameHandler gameHandler;
@@ -75,6 +77,8 @@ public class Main extends Application {
 		this.mines = 10;
 		this.unit = 25;
 		this.imageArray = new Image[12];
+		Media media = new Media(new	File("src/Sounds/Main Theme.mp3").toURI().toString());
+		this.mediaPlayer = new MediaPlayer(media);
 	}
 
 	@Override
@@ -86,7 +90,6 @@ public class Main extends Application {
 
 		MenuBar mb = new MenuBar();
 		Menu file = new Menu("File");
-		Menu options = new Menu("Options");
 		Menu newgame = new Menu("New Game");
 
 		MenuItem exit = new MenuItem("Exit");
@@ -97,15 +100,12 @@ public class Main extends Application {
 		MenuItem medium = new MenuItem("Medium");
 		MenuItem hard = new MenuItem("Hard");
 
-		// Media media = new Media(new
-		// File("C:/Users/Martin/git/minesweeper/src/Sounds/Main
-		// Theme.mp3").toURI().toString());
-		// MediaPlayer mediaPlayer = new MediaPlayer(media);
-		// mediaPlayer.play();
+		if(!mediaPlayer.getStatus().equals(Status.PLAYING))
+			mediaPlayer.play();
 
 		newgame.getItems().addAll(easy, medium, hard);
 		file.getItems().addAll(newgame, new SeparatorMenuItem(), option, save, open, new SeparatorMenuItem(), exit);
-		mb.getMenus().addAll(file, options);
+		mb.getMenus().addAll(file);
 
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		root.setTop(mb);
@@ -139,7 +139,9 @@ public class Main extends Application {
 				tilesInY = 16;
 				mines = 99;
 			}
-			start(primaryStage);
+			file.hide();
+			newgame.hide();
+			restartGame(primaryStage);
 		});
 
 		option.setOnAction(event -> {
@@ -204,6 +206,10 @@ public class Main extends Application {
 			}
 		});
 
+	}
+	
+	private void restartGame(Stage stage){
+		start(stage);
 	}
 
 	private void optionsWindow(Stage primaryStage) {
@@ -273,7 +279,8 @@ public class Main extends Application {
 					tilesInY = (Integer.parseInt(textFieldY.getText()));
 					mines = (Integer.parseInt(textFieldMines.getText()));
 					optionsStage.close();
-					start(primaryStage);
+					restartGame(primaryStage);
+//					start(primaryStage);
 				} else {
 					warningLabel.setText("Too many mines");
 				}
@@ -290,7 +297,7 @@ public class Main extends Application {
 	public void endText(Stage primaryStage) {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
-		gc.setFont(new Font("Impact", 72));
+		gc.setFont(new Font("Impact", 65));
 		if (gameHandler.getGameState() == GameState.GAMEWON) {
 			gc.setFill(Color.GREEN);
 			gc.fillText("You won", (unit * tilesInX) / 2, (unit * tilesInY) / 2);
