@@ -18,6 +18,22 @@ public class HighScore {
 	 * spara allt i en fin sorterad fil som går att öppna och läsa
 	 */
 	
+	Field field;
+	
+	public int calculateHighScore(Field field){
+		int score = 0;
+		int aTiles = 100;
+		int bMines = 10;
+		int cTime = 600000;
+		
+		int tiles = field.getHeight() * field.getWidth();
+		int mines = field.getMines();
+		// int time = timePassed;
+		
+		//score = (aTiles / tiles) * (bMines * mines) * (cTime / time);
+		
+		return score;
+	}
 	
 	public String readHighScore() {
 		String text = null;
