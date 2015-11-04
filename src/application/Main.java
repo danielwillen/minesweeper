@@ -285,14 +285,13 @@ public class Main extends Application {
 			//testing!
 			highScoreWindow(primaryStage);
 		}
-
 	}
 	
 	private void highScoreWindow(Stage primaryStage) {
 		Stage highScoreStage = new Stage();
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root, 300, 150);
-		Label label;
+		Label label = new Label();
 		
 		if (gameHandler.getGameState() == GameState.GAMEWON) {
 			HBox hb = new HBox();
@@ -303,12 +302,14 @@ public class Main extends Application {
 			root.setBottom(hb);
 			
 			tf.setOnAction(event-> {
-				String score = "1000" + ":" + tf.getText();
+				String score = highscore.calculateHighScore(field, timePassed) + ":" + tf.getText();
 				highscore.writeToHighScore(score);
+				label.setText(highscore.readHighScore());
+				hb.getChildren().clear();
 			});
 		}
 		
-		label = new Label(highscore.readHighScore());
+		label.setText(highscore.readHighScore());
 		
 		root.setCenter(label);
 		label.setAlignment(Pos.CENTER);
