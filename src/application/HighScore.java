@@ -30,7 +30,7 @@ public class HighScore {
 		int mines = field.getMines();
 		long time = timePassed;
 		
-		score = (aTiles / tiles) * (bMines * mines) * (cTime / time);
+		score = (tiles / aTiles) * (bMines * mines) * (cTime / time);
 		
 		return score;
 	}

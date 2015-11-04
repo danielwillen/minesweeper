@@ -46,10 +46,8 @@ public class GameHandler {
 		for (Tile tile : flaggedList) {
 			if (tile.isMine()) {
 				count++;
-				System.out.println(count);
 			}else{
 				count--;
-				System.out.println(count);
 			}
 		}
 		if (count == field.getMines()) {
