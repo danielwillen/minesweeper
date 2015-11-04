@@ -296,7 +296,7 @@ public class Main extends Application {
 		}
 	}
 
-	rivate void openFile(File file) {			
+	private void openFile(File file) {			
 	        try {
 	            desktop.open(file);
 	        } catch (IOException ex) {
