@@ -320,6 +320,8 @@ public class Main extends Application {
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root, 300, 150);
 		Label label = new Label();
+		highScoreStage.setX(primaryStage.getX() + 300);
+		highScoreStage.setY(primaryStage.getY() + 50);
 		
 		if (gameHandler.getGameState() == GameState.GAMEWON) {
 			HBox hb = new HBox();
