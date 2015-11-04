@@ -20,17 +20,17 @@ public class HighScore {
 	
 	Field field;
 	
-	public int calculateHighScore(Field field){
-		int score = 0;
+	public long calculateHighScore(Field field, long timePassed){
+		long score = 0;
 		int aTiles = 100;
 		int bMines = 10;
 		int cTime = 600000;
 		
 		int tiles = field.getHeight() * field.getWidth();
 		int mines = field.getMines();
-		// int time = timePassed;
+		long time = timePassed;
 		
-		//score = (aTiles / tiles) * (bMines * mines) * (cTime / time);
+		score = (aTiles / tiles) * (bMines * mines) * (cTime / time);
 		
 		return score;
 	}
@@ -77,7 +77,7 @@ public class HighScore {
 		//sorterar efter poäng. spelare måste läggas till som sträng i formatet "poäng:namn"
 		Collections.sort(scores, new Comparator<String>() {
 		    public int compare(String a, String b) {
-		        return Integer.signum(fixString(a) - fixString(b));
+		        return Integer.signum(fixString(b) - fixString(a));
 		    }
 		    private int fixString(String in) {
 		        return Integer.parseInt(in.substring(0, in.indexOf(':')));
