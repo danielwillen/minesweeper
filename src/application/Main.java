@@ -129,8 +129,7 @@ public class Main extends Application {
 
 		save.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
-			FileChooser.ExtensionFilter extensionfilter = new FileChooser.ExtensionFilter("Text files (*.txt)",
-					"*.txt");
+			FileChooser.ExtensionFilter extensionfilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
 			fileChooser.getExtensionFilters().add(extensionfilter);
 			File savedFile = fileChooser.showSaveDialog(primaryStage);
 			if (savedFile != null) {
@@ -146,12 +145,12 @@ public class Main extends Application {
 			}
 		});
 
-		save.setOnAction(event -> {
+		/*save.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
 			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
 			fileChooser.getExtensionFilters().add(extFilter);
 			fileChooser.showSaveDialog(primaryStage);
-		});
+		});*/
 
 		open.setOnAction(event -> {
 
@@ -297,11 +296,14 @@ public class Main extends Application {
 		}
 	}
 
-	private void openFile(File file) {
-		try {
-			desktop.open(file);
-		} catch (IOException ex) {
-			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+	rivate void openFile(File file) {			
+	        try {
+	            desktop.open(file);
+	        } catch (IOException ex) {
+	            Logger.getLogger(
+	                Main.class.getName()).log(
+	                    Level.SEVERE, null, ex
+	                );
 		}
 
 	}
