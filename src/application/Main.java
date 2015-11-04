@@ -70,8 +70,8 @@ public class Main extends Application {
 
 	@Override
 	public void init() {
-		this.tilesInX = 10;
-		this.tilesInY = 10;
+		this.tilesInX = 9;
+		this.tilesInY = 9;
 		this.mines = 10;
 		this.unit = 25;
 		this.imageArray = new Image[12];
@@ -87,17 +87,23 @@ public class Main extends Application {
 		MenuBar mb = new MenuBar();
 		Menu file = new Menu("File");
 		Menu options = new Menu("Options");
+		Menu newgame = new Menu("New Game");
 
 		MenuItem exit = new MenuItem("Exit");
 		MenuItem save = new MenuItem("Save");
 		MenuItem open = new MenuItem("Open");
-		MenuItem newgame = new MenuItem("New Game");
 		MenuItem option = new MenuItem("Options");
+		MenuItem easy = new MenuItem("Easy");
+		MenuItem medium = new MenuItem("Medium");
+		MenuItem hard = new MenuItem("Hard");
 
-//		Media media = new Media(new File("C:/Users/Martin/git/minesweeper/src/Sounds/Main Theme.mp3").toURI().toString());
-//		MediaPlayer mediaPlayer = new MediaPlayer(media);
-//		mediaPlayer.play();
+		// Media media = new Media(new
+		// File("C:/Users/Martin/git/minesweeper/src/Sounds/Main
+		// Theme.mp3").toURI().toString());
+		// MediaPlayer mediaPlayer = new MediaPlayer(media);
+		// mediaPlayer.play();
 
+		newgame.getItems().addAll(easy, medium, hard);
 		file.getItems().addAll(newgame, new SeparatorMenuItem(), option, save, open, new SeparatorMenuItem(), exit);
 		mb.getMenus().addAll(file, options);
 
@@ -120,6 +126,19 @@ public class Main extends Application {
 		timeStart = System.currentTimeMillis();
 
 		newgame.setOnAction(event -> {
+			if(event.getTarget().equals(easy)) {
+				tilesInX = 9;
+				tilesInY = 9;
+				mines = 10;
+			}else if(event.getTarget().equals(medium)) {
+				tilesInX = 16;
+				tilesInY = 16;
+				mines = 40;
+			} else if(event.getTarget().equals(hard)) {
+				tilesInX = 30;
+				tilesInY = 16;
+				mines = 99;
+			}
 			start(primaryStage);
 		});
 
@@ -129,7 +148,8 @@ public class Main extends Application {
 
 		save.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
-			FileChooser.ExtensionFilter extensionfilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+			FileChooser.ExtensionFilter extensionfilter = new FileChooser.ExtensionFilter("Text files (*.txt)",
+					"*.txt");
 			fileChooser.getExtensionFilters().add(extensionfilter);
 			File savedFile = fileChooser.showSaveDialog(primaryStage);
 			if (savedFile != null) {
@@ -145,12 +165,13 @@ public class Main extends Application {
 			}
 		});
 
-		/*save.setOnAction(event -> {
-			FileChooser fileChooser = new FileChooser();
-			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
-			fileChooser.getExtensionFilters().add(extFilter);
-			fileChooser.showSaveDialog(primaryStage);
-		});*/
+		/*
+		 * save.setOnAction(event -> { FileChooser fileChooser = new
+		 * FileChooser(); FileChooser.ExtensionFilter extFilter = new
+		 * FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+		 * fileChooser.getExtensionFilters().add(extFilter);
+		 * fileChooser.showSaveDialog(primaryStage); });
+		 */
 
 		open.setOnAction(event -> {
 
@@ -336,14 +357,11 @@ public class Main extends Application {
 		}
 	}
 
-	private void openFile(File file) {			
-	        try {
-	            desktop.open(file);
-	        } catch (IOException ex) {
-	            Logger.getLogger(
-	                Main.class.getName()).log(
-	                    Level.SEVERE, null, ex
-	                );
+	private void openFile(File file) {
+		try {
+			desktop.open(file);
+		} catch (IOException ex) {
+			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 	}
