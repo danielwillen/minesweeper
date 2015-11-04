@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Application;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
+
 import application.GameHandler.GameState;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -56,7 +61,7 @@ public class Main extends Application {
 
 	Button button = new Button("New Game");
 	HighScore highscore = new HighScore();
-    private Desktop desktop = Desktop.getDesktop();
+	private Desktop desktop = Desktop.getDesktop();
 	private Field field;
 	private GameHandler gameHandler;
 	private Image[] imageArray;
@@ -89,6 +94,10 @@ public class Main extends Application {
 		MenuItem newgame = new MenuItem("New Game");
 		MenuItem option = new MenuItem("Options");
 
+//		Media media = new Media(new File("C:/Users/Martin/git/minesweeper/src/Sounds/Main Theme.mp3").toURI().toString());
+//		MediaPlayer mediaPlayer = new MediaPlayer(media);
+//		mediaPlayer.play();
+
 		file.getItems().addAll(newgame, new SeparatorMenuItem(), option, save, open, new SeparatorMenuItem(), exit);
 		mb.getMenus().addAll(file, options);
 
@@ -110,11 +119,9 @@ public class Main extends Application {
 
 		timeStart = System.currentTimeMillis();
 
-
 		newgame.setOnAction(event -> {
 			start(primaryStage);
 		});
-
 
 		option.setOnAction(event -> {
 			optionsWindow(primaryStage);
@@ -122,11 +129,12 @@ public class Main extends Application {
 
 		save.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
-			FileChooser.ExtensionFilter extensionfilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+			FileChooser.ExtensionFilter extensionfilter = new FileChooser.ExtensionFilter("Text files (*.txt)",
+					"*.txt");
 			fileChooser.getExtensionFilters().add(extensionfilter);
 			File savedFile = fileChooser.showSaveDialog(primaryStage);
 			if (savedFile != null) {
-				
+
 				try {
 					String text = highscore.readHighScore();
 					saveFile(text, savedFile);
@@ -147,14 +155,12 @@ public class Main extends Application {
 
 		open.setOnAction(event -> {
 
-
 			FileChooser fileChooser = new FileChooser();
 			File selectedFile = fileChooser.showOpenDialog(null);
-			if(selectedFile != null){
+			if (selectedFile != null) {
 				openFile(selectedFile);
-				
-			}
 
+			}
 
 			else {
 				System.out.println("Unable to select a File");
@@ -290,19 +296,14 @@ public class Main extends Application {
 			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-		
-	    private void openFile(File file) {			
-	        try {
-	            desktop.open(file);
-	        } catch (IOException ex) {
-	            Logger.getLogger(
-	                Main.class.getName()).log(
-	                    Level.SEVERE, null, ex
-	                );
+
+	private void openFile(File file) {
+		try {
+			desktop.open(file);
+		} catch (IOException ex) {
+			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 		}
-	        
-		
-	    
+
 	}
 
 	private void fetchImages() {
