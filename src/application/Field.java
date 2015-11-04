@@ -10,6 +10,14 @@ public class Field {
 	int summa = 0;
 	private int mines;
 
+	public void exposeAll() {
+		for (int y = 0; y < height; y++){
+			for (int x = 0; x < width; x++){
+				tileArray[x][y].setVisible(true);
+			}
+		}
+	}
+	
 	public void newBlankField(int width, int height) {
 		tileArray = new Tile[width][height];
 		this.height = height;
