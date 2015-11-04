@@ -137,14 +137,7 @@ public class Main extends Application {
 
 			}
 		});
-
-		save.setOnAction(event -> {
-			FileChooser fileChooser = new FileChooser();
-			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
-			fileChooser.getExtensionFilters().add(extFilter);
-			fileChooser.showSaveDialog(primaryStage);
-		});
-
+		
 		open.setOnAction(event -> {
 
 
@@ -154,8 +147,6 @@ public class Main extends Application {
 				openFile(selectedFile);
 				
 			}
-
-
 			else {
 				System.out.println("Unable to select a File");
 
