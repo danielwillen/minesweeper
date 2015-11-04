@@ -14,6 +14,8 @@ public class Field {
 		for (int y = 0; y < this.height; y++){
 			for (int x = 0; x < this.width; x++){
 				tileArray[x][y].setVisible(true);
+				if (tileArray[x][y].isFlagged())
+					tileArray[x][y].toggleFlagged();
 			}
 		}
 	}

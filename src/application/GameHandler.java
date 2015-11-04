@@ -24,10 +24,12 @@ public class GameHandler {
 				testExpose(tile);
 			} else {
 				tile.setVisible(true);
+				field.exposeAll();
 				gameState = GameState.GAMELOST;
 			}
 		}
 		if (winCondition()) {
+			field.exposeAll();
 			gameState = GameState.GAMEWON;
 		}
 	}
@@ -36,6 +38,23 @@ public class GameHandler {
 		Tile tile = field.getTileArray()[x][y];
 		if (!tile.isVisible()) {
 			flagTile(tile);
+		}
+	}
+	
+	private void wonByFlagging() {
+		int count = 0;
+		for (Tile tile : flaggedList) {
+			if (tile.isMine()) {
+				count++;
+				System.out.println(count);
+			}else{
+				count--;
+				System.out.println(count);
+			}
+		}
+		if (count == field.getMines()) {
+			field.exposeAll();
+			gameState = GameState.GAMEWON;
 		}
 	}
 
@@ -200,22 +219,6 @@ public class GameHandler {
 			tile.toggleFlagged();
 		}
 		wonByFlagging();
-	}
-
-	private void wonByFlagging() {
-		int count = 0;
-		for (Tile tile : flaggedList) {
-			if (tile.isMine()) {
-				count++;
-				System.out.println(count);
-			}else{
-				count--;
-				System.out.println(count);
-			}
-		}
-		if (count == field.getMines()) {
-			gameState = GameState.GAMEWON;
-		}
 	}
 
 	public void updateTileImage(Tile tile) {
