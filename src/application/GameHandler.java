@@ -10,7 +10,7 @@ public class GameHandler {
 	private ArrayList<Tile> flaggedList;
 	private int[] directions;
 
-	GameHandler(Field field) {
+	public GameHandler(Field field) {
 		this.field = field;
 		flaggedList = new ArrayList<Tile>();
 		this.directions = new int[] { -1, 0, 1 };
@@ -101,13 +101,14 @@ public class GameHandler {
 		}
 	}
 
-	private boolean isWithinBounds(int j, int i) {
+	public boolean isWithinBounds(int j, int i) {
 		if (j >= 0 && j < field.getWidth() && i >= 0 && i < field.getHeight()) {
 			return true;
 		}
 		return false;
 	}
 
+	/*
 	private void expose(Tile tile) {
 		exposeCount++;
 		tile.setVisible(true);
@@ -124,7 +125,6 @@ public class GameHandler {
 			}
 		}
 	}
-
 	private boolean isNeighboorExposed(Tile tile, int xOffset, int yOffset) {
 		int checkX = tile.getX() + xOffset;
 		int checkY = tile.getY() + yOffset;
@@ -134,7 +134,6 @@ public class GameHandler {
 		return false;
 
 	}
-
 	private boolean isNeighborWithinBoundary(Tile tile, int xOffset, int yOffset) {
 		int fieldWidth = field.getWidth();
 		int fieldHeight = field.getHeight();
@@ -145,14 +144,16 @@ public class GameHandler {
 			return true;
 		return false;
 	}
+	
+	private boolean hasNeighboors(Tile tile) {
+		return (tile.getNeighbour() > 0);
+	}
+	 */
 
 	private boolean winCondition() {
 		return exposeCount == field.numberOfTiles() - field.getMines();
 	}
 
-	private boolean hasNeighboors(Tile tile) {
-		return (tile.getNeighbour() > 0);
-	}
 
 	private boolean tileIsMined(Tile tile) {
 		return tile.isMine();
