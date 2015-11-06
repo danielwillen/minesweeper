@@ -23,16 +23,17 @@ public class HighScore {
 
 	public long calculateHighScore(Field field, long timePassed) {
 		long score = 0;
-		int aTiles = 100;
+		float aTiles = 100;
 		int bMines = 10;
 		int cTime = 600000;
 
-		int tiles = field.getHeight() * field.getWidth();
+		float tiles = field.getHeight() * field.getWidth();
+		
 		int mines = field.getMines();
 		long time = timePassed;
-
-		score = (tiles/aTiles) * (bMines * mines) * (cTime / time);
-
+		
+		score = (int)Math.ceil(aTiles/tiles) * (bMines * mines) * (cTime / time);
+		
 		return score;
 	}
 
