@@ -64,6 +64,17 @@ public class Field {
 		}
 		return neighbourCount;
 	}
+	
+	public int mineCounter() {
+		int mines = 0;
+		for (int y = 0; y < height; y++){
+			for (int x = 0; x < width; x++){
+				if (tileArray[x][y].isMine())
+					mines++;
+			}
+		}
+		return mines;
+	}
 
 	public Tile[][] mineLayer(int mines) {
 		int minesLeft = mines;
