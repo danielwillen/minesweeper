@@ -31,7 +31,7 @@ public class Field {
 		}
 	}
 
-	public void printField(Tile tileArray[][]) {
+	/*public void printField(Tile tileArray[][]) {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				System.out.print("X: " + tileArray[x][y].getX());
@@ -39,7 +39,7 @@ public class Field {
 				System.out.println(" Mine: " + tileArray[x][y].isMine());
 			}
 		}
-	}
+	}*/
 	
 	public void setFieldNeighbours(){
 		for (int i = 0; i < height; i++) {
