@@ -3,7 +3,8 @@ package application;
 public class Tile {
 
 	/*
-	 * 
+	 * Struktur för att spara spelet
+	 *  
 	 * 0 = !visible
 	 * 1 = !visible & flagged
 	 * 2 = !visible & mine
@@ -35,12 +36,11 @@ public class Tile {
 		this.flagged = false;
 	}
 
-	public Tile(boolean mine, int x, int y) { // Konstruktor för tile, mina
-												// eller inte?
+	public Tile(boolean mine, int x, int y) {
 		super();
 		this.mine = mine;
-		this.neighbour = 0; // Sätter antal min-grannar till 0
-		this.visible = false; // Sätter visible till false
+		this.neighbour = 0; 
+		this.visible = false;
 		this.x = x;
 		this.y = y;
 		this.flagged = false;

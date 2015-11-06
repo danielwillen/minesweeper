@@ -12,7 +12,7 @@ public class GameHandler {
 
 	public GameHandler(Field field) {
 		this.field = field;
-		flaggedList = new ArrayList<Tile>();
+		this.flaggedList = new ArrayList<Tile>();
 		this.directions = new int[] { -1, 0, 1 };
 	}
 
@@ -40,13 +40,13 @@ public class GameHandler {
 			flagTile(tile);
 		}
 	}
-	
+
 	private void wonByFlagging() {
 		int count = 0;
 		for (Tile tile : flaggedList) {
 			if (tile.isMine()) {
 				count++;
-			}else{
+			} else {
 				count--;
 			}
 		}
@@ -108,52 +108,9 @@ public class GameHandler {
 		return false;
 	}
 
-	/*
-	private void expose(Tile tile) {
-		exposeCount++;
-		tile.setVisible(true);
-		if (!hasNeighboors(tile) && (!tileIsMined(tile))) {
-			int xOffset, yOffset;
-			for (Direction direction : Direction.values()) {
-				xOffset = direction.getX();
-				yOffset = direction.getY();
-
-				if (isNeighborWithinBoundary(tile, xOffset, yOffset) && (!isNeighboorExposed(tile, xOffset, yOffset))) {
-					Tile neighbor = field.getTileArray()[tile.getX() + xOffset][tile.getY() + yOffset];
-					expose(neighbor);
-				}
-			}
-		}
-	}
-	private boolean isNeighboorExposed(Tile tile, int xOffset, int yOffset) {
-		int checkX = tile.getX() + xOffset;
-		int checkY = tile.getY() + yOffset;
-		Tile tmpTile = field.getTileArray()[checkX][checkY];
-		if (tmpTile.isVisible())
-			return true;
-		return false;
-
-	}
-	private boolean isNeighborWithinBoundary(Tile tile, int xOffset, int yOffset) {
-		int fieldWidth = field.getWidth();
-		int fieldHeight = field.getHeight();
-		int checkX = tile.getX() + xOffset;
-		int checkY = tile.getY() + yOffset;
-
-		if (((checkX >= 0) && (checkX <= fieldWidth - 1)) && ((checkY >= 0) && (checkY <= fieldHeight - 1)))
-			return true;
-		return false;
-	}
-	
-	private boolean hasNeighboors(Tile tile) {
-		return (tile.getNeighbour() > 0);
-	}
-	 */
-
 	private boolean winCondition() {
 		return exposeCount == field.numberOfTiles() - field.getMines();
 	}
-
 
 	private boolean tileIsMined(Tile tile) {
 		return tile.isMine();
@@ -218,10 +175,6 @@ public class GameHandler {
 			tile.toggleFlagged();
 		}
 		wonByFlagging();
-	}
-
-	public void updateTileImage(Tile tile) {
-
 	}
 
 }

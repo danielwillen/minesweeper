@@ -14,7 +14,7 @@ public class GameHandlerTest {
 		Field field = new Field();
 		GameHandler gameHandler = new GameHandler(field);
 		field.newBlankField(10, 10);
-		assertTrue(gameHandler.isWithinBounds(1,9));
+		assertTrue(gameHandler.isWithinBounds(5,9));
 	}
 
 }
