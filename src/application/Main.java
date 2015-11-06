@@ -208,7 +208,6 @@ public class Main extends Application {
 					mines = (Integer.parseInt(textFieldMines.getText()));
 					optionsStage.close();
 					restartGame(primaryStage);
-					// start(primaryStage);
 				} else {
 					warningLabel.setText("Too many mines");
 				}
@@ -230,15 +229,13 @@ public class Main extends Application {
 			gc.setFill(Color.GREEN);
 			gc.fillText("You won", (unit * tilesInX) / 2, (unit * tilesInY) / 2);
 
-			timePassed = System.currentTimeMillis() - timeStart; // detta är
+			timePassed = System.currentTimeMillis() - timeStart; // detta används till
 																	// spelarens
 																	// poäng
-			// testing!
 			highScoreWindow(primaryStage);
 		} else if (gameHandler.getGameState() == GameState.GAMELOST) {
 			gc.setFill(Color.RED);
 			gc.fillText("You lost", (unit * tilesInX) / 2, (unit * tilesInY) / 2);
-			// testing!
 			highScoreWindow(primaryStage);
 		}
 	}
