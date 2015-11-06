@@ -1,7 +1,6 @@
-/*package MinesweeperTest;
+package MinesweeperTest;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import application.Main;
@@ -14,4 +13,4 @@ public class MainTest {
 //		return;
 	}
 
-}*/
+}
